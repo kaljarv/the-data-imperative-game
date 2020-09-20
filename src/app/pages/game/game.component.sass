@@ -1,0 +1,358 @@
+@import 'variables.scss'
+
+
+// TODO:
+// pipes
+// avatar
+// hovers
+// make nice value change transition for statuses
+// progress bar for months left
+// animations
+
+// VARIABLES
+
+// Main row min height
+$minHeight-main: max(22rem, 40vh)
+
+// The gap between the outlined content of an investment content and the investment buttons
+$subCat-inv-gap: $margin-L
+// The default horizontal padding of buttons, needed for calculating the expansion of 
+// the investment buttons. Check that this matches the value set in styles.sass
+$btnPad-hor: $margin-L
+
+// Checkmark icon
+$url-checkmark: url(/assets/images/checkmark.svg)
+$iconWidth-checkmark: 1rem
+$iconHeight-checkmark: $iconWidth-checkmark * 9.842 / 8.885
+
+// Money bag icon
+$url-moneyBag: url(/assets/images/money-bag.svg)
+$iconHeight-moneyBag: 3rem
+$iconWidth-moneyBag: $iconHeight-moneyBag * 14.402 / 17.439
+  
+// The outline messes up the border changes
+button:focus
+  outline: none
+
+:host
+  display: block
+  height: 100vh
+  width: 100vw
+  background: url(/assets/images/game-bg.jpg) center/cover, $color-secondary
+
+#grid
+  display: grid
+  padding: $margin-XL $margin-XL $margin-XXL $margin-XL
+  height: 100vh
+  width: 100%
+  grid-template-columns: [col-1] 1fr [gap-1] $margin-XL [col-2] 1fr [gap-2] $margin-XL [col-3] 1fr [gap-3] $margin-XL [col-4] 1fr [right-edge]
+  grid-template-rows:    [top] 4.5rem [mid] auto [main] max(22rem, 40vh) [bottom-edge]
+  gap: 0rem 0rem
+
+.status
+  font-weight: $fontWeight-L
+  z-index: $zIndex-5
+  border: $border-M
+  border-radius: $borderRadius-M
+  // color: $color-onPrimary
+  // border-color: $color-onPrimary
+  display: grid
+  grid-template-rows: 1fr 2fr
+  grid-template-columns: 1fr
+
+  .title
+    padding: $margin-S 0rem 0rem $margin-S
+    font-family: $fontFamily-primary
+    font-size: $fontSize-S
+    justify-self: left
+  .value
+    font-family: $fontFamily-accent
+    font-size: $fontSize-XL
+    justify-self: center
+
+#balance
+  grid-area: top / col-1
+
+#round
+  grid-area: top / col-2
+
+#returns
+  grid-area: top / col-3
+
+#purchases
+  grid-area: top / col-4
+
+
+// Common features for all main blocks
+.category,
+.subcategory,
+.investment
+  // All blocks can expand to the top of the screen but their height will optimally be
+  // the same (= grid row main height). NB. .investment needs an adjusted min-height
+  // because of a different box-sizing attribute.
+  // When setting the grid placement for individual blocks later on, we first define
+  // the column span with the generic selector (.subcategory or .investment) and then
+  // only set the starting column line with the --of-n selectors
+  grid-row-start: top
+  grid-row-end: bottom-edge
+  align-self: end
+  min-height: $minHeight-main
+    
+.category
+  background-color: $color-onPrimary
+  border-radius: $borderRadius-M
+  box-shadow: $boxShadow-M
+  padding: $margin-L
+  z-index: $zIndex-6
+  // Shrink when no content is shown
+  &.needsOnboarding
+    grid-row-start: main
+    align-self: start
+    min-height: unset
+
+  h3
+    text-align: center
+
+  // .content
+  .children
+    button
+      .title
+        display: block
+      .investmentMarkers
+        display: flex
+        flex-flow: row nowrap
+        justify-content: center
+        margin-top: $margin-S
+        a
+          display: block
+          position: relative // Need this for ::after
+          width: 1rem
+          height: 1rem
+          margin: 0 $margin-M
+          border: $border-M
+          border-color: $color-secondary
+          border-radius: 50%
+          cursor: pointer
+          // Add a filled circle inside for active or purchased investments
+          &.active::after,
+          &.purchased::after
+            content: ''
+            display: block
+            position: absolute
+            top:    $borderWidth-M * 2
+            bottom: $borderWidth-M * 2
+            left:   $borderWidth-M * 2
+            right:  $borderWidth-M * 2
+            border-radius: 50%
+          &.purchased
+            border-color: $color-accent !important
+            &::after
+              background-color: $color-accent
+          &.active
+            &::after
+              background-color: $color-onPrimary !important
+      &.active
+        background-color: $color-primary
+        color: $color-onPrimary
+        width: calc(100% + #{$margin-L})
+        .investmentMarkers
+          a
+            border-color: $color-onPrimary
+
+  .description
+    button
+
+.category.onboarded
+
+.category--0
+  grid-column-start: col-1
+
+.category--1
+  grid-column-start: col-2
+
+.category--2
+  grid-column-start: col-3
+
+.category--3
+  grid-column-start: col-4
+
+// Activated subcategory buttons stretch towards the subcat menu
+.category--0,
+.category--1
+  .children button.active
+    // Add 1px to correct subpixel disparity
+    border-right-width: calc(#{$margin-L} + 1px)
+    border-top-right-radius: 0rem
+    border-bottom-right-radius: 0rem
+
+.category--2,
+.category--3
+  .children button.active
+    border-left-width: calc(#{$margin-L} + 1px)
+    border-top-left-radius: 0rem
+    border-bottom-left-radius: 0rem
+    // Move towards the left by border width
+    transform: translateX(calc(-#{$margin-L} - 1px))
+
+
+.dataPipe
+  z-index: $zIndex-5
+
+.dataPipe--0
+  grid-area: main / gap-1
+
+.dataPipe--1
+  grid-area: main / gap-2
+
+.dataPipe--2
+  grid-area: main / gap-3
+
+
+
+.subcategory
+  grid-column-end: span 2
+  background-color: $color-primary
+  border-radius: $borderRadius-M
+  color: $color-onPrimary
+  padding: $margin-XL
+  z-index: $zIndex-8
+
+  button    
+    border-color: $color-onPrimary
+    position: relative // Needed for ::before
+    &.purchased
+      &::before
+        content: $url-checkmark
+        display: block
+        height: $iconHeight-checkmark
+        width: $iconWidth-checkmark
+        position: absolute
+        top:  calc(50% - 0.5 * #{$iconHeight-checkmark})
+        left: $iconWidth-checkmark * 0.5
+    &.active
+      // Extend towards the investment block by the gap, width of the white border 
+      // plus 1px to correct any subpixel disparity. See more below
+      width: calc(100% + #{$subCat-inv-gap} + #{$borderWidth-M} + 1px)
+      // To cover any of the investments border reaching inside the button
+      background-color: $color-primary
+
+.subcategory--of-0
+  grid-column-start: gap-1
+
+.subcategory--of-1
+  grid-column-start: gap-2
+
+.subcategory--of-2
+  grid-column-start: col-2
+
+.subcategory--of-3
+  grid-column-start: col-3
+
+// Extend the active button towards the investment block on the right or left and merge onto its outline
+.subcategory--of-0,
+.subcategory--of-1
+  &.hasActive
+    // If there's an investment open, we need to very unelegantly clip the background
+    // so that it doesn't cover the investment
+    margin-right: $margin-XL
+    padding-right: 0rem
+  button.active
+    // For padding, we sum up the gap, 1px to correct any subpixel disparity 
+    // and the button's default right padding
+    padding-right: calc(#{$subCat-inv-gap} + 1px + #{$btnPad-hor})
+    border-right-color: $color-primary
+    // Here again we add 1px to correct any subpixel disparity
+    border-right-width: calc(#{$borderWidth-M} + 1px)
+    border-top-right-radius: 0rem
+    border-bottom-right-radius: 0rem
+
+.subcategory--of-2,
+.subcategory--of-3
+  &.hasActive
+    margin-left: $margin-XL
+    padding-left: 0rem
+  button.active
+    padding-left: calc(#{$subCat-inv-gap} + 1px + #{$btnPad-hor})
+    transform: translateX(calc(-#{$subCat-inv-gap} - #{$borderWidth-M} - 1px))
+    border-left-color: $color-primary
+    border-left-width: calc(#{$borderWidth-M} + 1px)
+    border-top-left-radius: 0rem
+    border-bottom-left-radius: 0rem
+    // Move the checkmark icon as its position is based on button width
+    &.purchased::before
+      transform: translateX(calc(#{$subCat-inv-gap} + 1px))
+
+
+        
+.investment
+  grid-column-end: span 2
+  min-height: calc(#{$minHeight-main} - #{2 * $margin-XL})
+  background-color: $color-primary
+  border-radius: $borderRadius-M
+  color: $color-onPrimary
+  padding: $margin-XL
+  display: grid // To stretch the outlineWrapper
+  z-index: $zIndex-7
+  // Extend the block towards the subcategory, see below for more rules
+  box-sizing: content-box
+  width: calc(100% - #{$subCat-inv-gap})
+
+  .outlineWrapper
+    border: $border-M
+    border-radius: $borderRadius-M
+    border-color: $color-onPrimary
+    padding: $margin-L
+
+    h5
+      font-size: $fontSize-L
+      text-align: center
+
+    .description
+    button
+      color: $color-accent
+      border-color: $color-accent
+      font-family: $fontFamily-accent
+      font-size: $fontSize-L
+      margin-top: calc(#{$margin-L} + #{$iconHeight-moneyBag})
+      position: relative
+      &::before
+        content: $url-moneyBag
+        display: block
+        height: $iconHeight-moneyBag
+        width: $iconWidth-moneyBag
+        position: absolute
+        top: -$iconHeight-moneyBag
+        left: calc(50% - 0.5 * #{$iconWidth-moneyBag})
+      &:disabled
+        opacity: 0.5
+        cursor: not-allowed
+
+    .warning
+      font-size: $fontSize-S
+      // font-weight: $fontWeight-L
+      margin: $margin-M 0 0 0
+      text-align: center
+
+.investment--of-0
+  grid-column-start: gap-2
+
+.investment--of-1
+  grid-column-start: gap-3
+
+.investment--of-2
+  grid-column-start: col-1
+
+.investment--of-3
+  grid-column-start: col-2
+
+// Extend the block towards the subcategory on the left or right
+.investment--of-0,
+.investment--of-1
+  padding-left: 0rem
+  transform: translateX(calc(-#{$margin-XL} - #{$subCat-inv-gap}))
+  border-left: $margin-XL solid $color-primary
+
+.investment--of-2,
+.investment--of-3
+  padding-right: 0rem
+  border-right: $margin-XL solid $color-primary
