@@ -14,7 +14,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    // start: import local json files
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+    // end: import local json files
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

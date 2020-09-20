@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "the-data-imperative-game": {
@@ -30,6 +30,11 @@
             "styles": [
               "src/styles.sass"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -123,6 +128,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "the-data-imperative-game"
+    }
+  },
+  "defaultProject": "the-data-imperative-game",
+  "cli": {
+    "analytics": "aef978c8-5245-42f1-8240-9ab8c1f324dd"
+  }
 }

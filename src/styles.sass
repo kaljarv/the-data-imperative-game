@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '~normalize.css'
+@import 'variables.scss'
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&family=Oswald:wght@700&display=swap')
+
+/* BASICS */
+
+*
+  box-sizing: border-box
+
+:root
+  font-size: 13px
+
+body
+  margin: 0
+  padding: 0
+
+/* TYPOGRAPHY */
+
+body,
+input,
+button,
+textarea
+  color: $color-primary
+  font-family: $fontFamily-primary
+  font-weight: $fontWeight-M
+  line-height: $lineHeight-M
+
+h1,
+h2,
+h3,
+h4,
+h5
+  font-family: $fontFamily-accent
+  font-weight: $fontWeight-L
+  margin: $margin-M 0rem
+  &:first-child
+    margin-top: 0rem
+  &:last-child
+    margin-bottom: 0rem
+
+/* INTERACTIVE ELEMENTS */
+
+button
+  display: block
+  color: inherit
+  background-color: transparent
+  font-weight: $fontWeight-L
+  min-height: 4rem
+  padding: $margin-S $margin-L
+  margin-top: $margin-L
+  border: $border-M
+  border-radius: $borderRadius-M
+  text-align: center
+  width: 100%
+  cursor: pointer
