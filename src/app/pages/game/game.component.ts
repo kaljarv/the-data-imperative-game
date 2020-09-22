@@ -99,6 +99,8 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public categoryClick(category: InvestmentCategory, event: Event = null): void {
     if (category.needsOnboarding) {
+      // Hide advice
+      this.setAdviceHidden(true);
       this.startOnboarding(category, event);
     }
     // Disable background click if this investment is active,
@@ -109,6 +111,8 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public startOnboarding(category: InvestmentCategory, event: Event = null): void {
     if (category.onboardingAvailable) {
+      // Hide advice
+      this.setAdviceHidden(true);
       this.hideInvestments();
       category.activateOnboarding();
     }
@@ -118,6 +122,8 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public closeOnboarding(category: InvestmentCategory, event?: Event): void {
+    // Hide advice
+    this.setAdviceHidden(true);
     this.hideInvestments();
     category.completeOnboarding();
     this.updateUrl();
