@@ -24,17 +24,37 @@
     <span class="value">{{ spentBalance | currency:null:'symbol':'1.0' }}</span>
   </div>
 
+
+  <img *ngIf="feedback.imageUrl"
+       id="avatar"
+       [src]="feedback.imageUrl"
+       (click)="toggleAdvice($event)"
+       class="sentiment-{{ feedback.sentiment }}"
+       [class.hasAdvice]="feedback.advice" />
+
+  <div *ngIf="feedback.advice && !adviceHidden"
+       id="advice"
+       (click)="toggleAdvice($event)"
+       class="sentiment-{{ feedback.sentiment }}">
+    {{ feedback.advice }} <!-- Note that advice is already localized -->
+  </div>
+
   <ng-container *ngFor="let category of investmentCategories; index as i">
 
     <div (click)="categoryClick(category, $event)"
          class="category category--{{ i }}"
-         [class.needsOnboarding]="needsOnboarding(category)">
+         [class.needsOnboarding]="category.needsOnboarding">
       <h3>
         {{ t(category.title) }}
       </h3>
-      <div *ngIf="!needsOnboarding(category)"
+      <div *ngIf="!category.needsOnboarding && category.onboardingAvailable"
+           (click)="startOnboarding(category, $event)"
+           class="infoButton">
+        {{ t("i") }}
+      </div>
+      <div *ngIf="!category.needsOnboarding"
            class="content">
-        <div *ngIf="!onboardingActive(category)"
+        <div *ngIf="!category.onboardingActive"
              class="children">
 
             <button *ngFor="let subcategory of category.children"
@@ -47,14 +67,14 @@
               <div class="investmentMarkers">
                 <a *ngFor="let investment of subcategory.children"
                    (click)="show(investment, $event)"
-                   [class.purchased]="isPurchased(investment)"
+                   [class.purchased]="investment.purchased"
                    [class.active]="investment.active"
                    [title]="t(investment.title)"></a>
               </div>
             </button>
 
         </div>
-        <div *ngIf="onboardingActive(category)"
+        <div *ngIf="category.onboardingActive"
             class="description">
           {{ t(category.description) }}
           <button (click)="closeOnboarding(category, $event)"
@@ -68,6 +88,9 @@
     <!-- The data pipe -->
     <div *ngIf="i < 3"
          class="dataPipe dataPipe--{{ i }}">
+      <div *ngIf="getPipeFlow(i) > 0"
+           [style.height]="getPipeFlow(i) + '%'"
+           class="flow"></div>
     </div>
 
     <!-- We need to loop again for these as we cannot enclose the subcategory elements within their parents
@@ -80,7 +103,7 @@
              [class.hasActive]="hasActiveInvestments(subcategory)">
           <button *ngFor="let investment of subcategory.children"
                   (click)="show(investment, $event)"
-                  [class.purchased]="isPurchased(investment)"
+                  [class.purchased]="investment.purchased"
                   [class.active]="investment.active"
                   type="button">
             {{ t(investment.title) }}
@@ -94,7 +117,7 @@
             <div *ngIf="investment.active"
                  (click)="catchClick($event)"
                  class="investment investment--of-{{ i }}"
-                 [class.purchased]="isPurchased(investment)">
+                 [class.purchased]="investment.purchased">
               <div class="outlineWrapper">
                 <h5>
                   {{ t(investment.longTitle || investment.title) }}
@@ -102,20 +125,20 @@
                 <p class="description">
                   {{ t(investment.description) }}
                 </p>
-                <button *ngIf="!isPurchased(investment)"
+                <button *ngIf="!investment.purchased"
                         (click)="purchase(investment, $event)"
                         [disabled]="!canPurchase(investment)"
                         type="button">
                     {{ t("Invest") }}
                     {{ investment.price | currency:null:'symbol':'1.0' }}
                 </button>
-                <button *ngIf="isPurchased(investment)"
+                <button *ngIf="investment.purchased"
                         disabled="true"
                         type="button"
                         class="purchased">
                     {{ t("Purchased") }}
                 </button>
-                <p *ngIf="!isPurchased(investment) && !canPurchase(investment)"
+                <p *ngIf="!investment.purchased && !canPurchase(investment)"
                    class="warning">
                   {{ t("You don’t have enough funds!") }}
                 </p>
@@ -129,5 +152,17 @@
     </ng-container><!-- /let subcategory of category.children -->
 
   </ng-container><!-- /let category of investmentCategories -->
+
+  <button id="reset"
+          (click)="startOver($event)"
+          [disabled]="round == 1">
+    {{ t("Start over") }}
+  </button>
+
+  <button id="pass"
+          (click)="pass($event)"
+          [class.highlighted]="!canPurchaseSomething">
+    {{ t("Wait for one month") }}
+  </button>
   
 </div>

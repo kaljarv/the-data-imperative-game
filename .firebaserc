@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "the-data-imperative-game": {
+      "hosting": {
+        "the-data-imperative-game": [
+          "the-data-imperative-game"
+        ]
+      }
+    }
+  }
+}

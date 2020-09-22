@@ -2,8 +2,7 @@
   "version": 4,
   "balance": 100000,
   "rounds": 24,
-  "investments":
-    {"id": -1, "title": {"en-US": "ROOT"}, "children": [
+  "investments": [
       {"id": 100, "title": {"en-US": "Sources of data"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
         {"id": 104, "title": {"en-US": "Customer data"}, "children": [
           {"id": 0, "title": {"en-US": "Customer register"}, "longTitle": {"en-US": "Detailed register of customer information"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
@@ -63,7 +62,7 @@
           {"id": 26, "title": {"en-US": "Proggressive advertising"}, "longTitle": {"en-US": "Proggressive advertising"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
         ]}
       ]}
-    ]},
+    ],
   "investmentCombos": [
     {
       "investments": [0, 5, 11],

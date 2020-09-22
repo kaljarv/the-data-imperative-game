@@ -33,7 +33,10 @@ $lineHeight-S: 1.1;
 $lineHeight-M: 1.3;
 
 $borderWidth-M: 1px;
+$borderWidth-L: 2px;
+
 $border-M: $borderWidth-M solid $color-primary;
+$border-L: $borderWidth-L solid $color-primary;
 
 $borderRadius-M: 4px;
 $borderRadius-XL: 1.5rem;
@@ -58,6 +61,8 @@ $zIndex-9: 900; // Popups
 $zIndex-8: 800; // Subcategories
 $zIndex-7: 700; // Investments
 $zIndex-6: 600; // Categories
-$zIndex-5: 0;   // Content, Top bar
-$zIndex-4: -200;
+$zIndex-5: 500; // Pipes
+$zIndex-4: 400; // Top bar
+$zIndex-3: 300; // Avatar, advice
+$zIndex-2: 0;   // Content
 $zIndex-0: -1000;

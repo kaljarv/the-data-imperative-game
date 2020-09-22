@@ -9,19 +9,30 @@ import { filter } from 'rxjs/operators';
 
 
 import { Investment,
+         InvestmentCategory,
          InvestmentCombo,
          InvestmentId,
+         InvestmentNode,
+         InvestmentRoot,
          LocalizedString,
+         NULL_INVESTMENT_ID,
          ONBOARDING_NEEDED,
          ONBOARDING_ACTIVE,
          ONBOARDING_COMPLETE,
          ONBOARDING_REACTIVATED,
-         SharedService} from '../../services';
+         SharedService } from '../../services';
 
 const DATA_KEY_VERSION = 'v';
 const DATA_KEY_ONBOARDED = 'o';
 const DATA_KEY_PURCHASES = 'p';
 const DATA_SEPARATOR = ',';
+const ROUND_BASE = 1;
+const AVATAR_IMAGES = {
+  '-1': '/assets/images/avatar-worried.png',
+   '0': '/assets/images/avatar-neutral.png',
+   '1': '/assets/images/avatar-happy.png',
+   '2': '/assets/images/avatar-extatic.png',
+};
 
 /*
  * For convenience
@@ -29,36 +40,26 @@ const DATA_SEPARATOR = ',';
 function sum(arr: Array<number>): number {
   return arr.reduce((a, b) => a + b, 0);
 }
-/* 
- * Recursively apply a function to the nodes in an Investment node tree
- * If maxDepth is not null, recursion will not progress further than that with 0 limiting application to
- * investment itself.
- */
-function recursiveForEach(investment: Investment, func: (Investment) => void, maxDepth: number = null): void {
-  const _forEach = (current: Investment, depth: number): void => {
-    func(current);
-    if ((maxDepth == null || depth < maxDepth) && current.children?.length > 0)
-      current.children.forEach(c => _forEach(c, depth + 1));
-  }
-  _forEach(investment, 0);
-}
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.sass'],
   host: {
-    "(click)": "hideOthers()"
+    "(click)": "hideInvestments()"
   }
 })
 export class GameComponent implements OnDestroy, OnInit {
   // Options (TODO allow setting dynamically)
   public options = {
-    hideOnPurchase: true
+    hideOnPurchase: true,
+    autoShowOnlyChild: true,
+    pipeFlowScale: 100
   };
+  public adviceHidden: boolean = false;
   public investmentCombos: Array<InvestmentCombo>;
-  public investmentRoot: Investment;
-  public purchases: Array<InvestmentId>;
+  public investmentRoot: InvestmentRoot;
+  private _preloaded = new Array<any>();
   private _subscriptions = new Array<Subscription>();
 
   constructor(
@@ -66,9 +67,8 @@ export class GameComponent implements OnDestroy, OnInit {
     private router: Router,
     private shared: SharedService
   ) {
-    this.investmentRoot = this.shared.settings.investments;
-    this._preprocessInvestments(this.investmentRoot);
-    this.investmentCombos = this.shared.settings.investmentCombos;
+    this.investmentRoot = this.shared.investments;
+    this.investmentCombos = this.shared.investmentCombos;
     this.resetState();
   }
 
@@ -81,6 +81,12 @@ export class GameComponent implements OnDestroy, OnInit {
         filter(evt => evt instanceof NavigationEnd)
       ).subscribe(() => this.readParams())
     );
+    // Preload images
+    for (let url in AVATAR_IMAGES) {
+      const img = new Image();
+      img.src = AVATAR_IMAGES[url];
+      this._preloaded.push(img);
+    }
   }
 
   ngOnDestroy(): void {
@@ -91,29 +97,29 @@ export class GameComponent implements OnDestroy, OnInit {
    * USER ACTIONS                       *
    **************************************/
 
-  public categoryClick(investment: Investment, event: Event = null): void {
-    if (this.needsOnboarding(investment)) {
-      this.startOnboarding(investment);
+  public categoryClick(category: InvestmentCategory, event: Event = null): void {
+    if (category.needsOnboarding) {
+      this.startOnboarding(category);
     }
     // Disable background click if this investment is active,
     // otherwise bg click is okay
-    if (event && investment.active)
+    if (event && category.active)
       event.stopPropagation();
   }
 
-  public startOnboarding(investment: Investment, event: Event = null): void {
-    if (this.onboardingAvailable(investment)) {
-      this.hideOthers();
-      investment.onboardingStatus = ONBOARDING_ACTIVE;
+  public startOnboarding(category: InvestmentCategory, event: Event = null): void {
+    if (category.onboardingAvailable) {
+      this.hideInvestments();
+      category.activateOnboarding();
     }
     // To disable background click
     if (event)
       event.stopPropagation();
   }
 
-  public closeOnboarding(investment: Investment, event?: Event): void {
-    this.hideOthers();
-    investment.onboardingStatus = ONBOARDING_COMPLETE;
+  public closeOnboarding(category: InvestmentCategory, event?: Event): void {
+    this.hideInvestments();
+    category.completeOnboarding();
     this.updateUrl();
     // To disable background click
     if (event)
@@ -123,25 +129,63 @@ export class GameComponent implements OnDestroy, OnInit {
   /*
    * Open a subcategory or an investment
    */
-  public show(investment: Investment, event?: Event): void {
-    if (investment.parent) {
-      // Propagate showing upwards first so we also hide siblings of ancestors
-      this.show(investment.parent);
-      // Deactivate siblings and their descendants
-      investment.parent.children.filter(i => i != investment).forEach(i => this.hide(i));
+  public show(node: InvestmentNode, event?: Event): void {
+    // If we are showing and investment with only one child, propagate showing to that
+    if (this.options.autoShowOnlyChild && node instanceof InvestmentCategory && node.children.length === 1) {
+      this.show(node.children[0], event);
+    } else {
+      // Set this one as active
+      node.active = true;
     }
-    // Set this one as active
-    investment.active = true;
+    // Hide advice
+    this.setAdviceHidden(true);
     // To disable background click
     if (event)
       event.stopPropagation();
   }
 
-  public purchase(investment: Investment, event?: Event): void {
+  /*
+   * Purchase an investment or pass a round if no investment is specfied.
+   */
+  public purchase(investment?: Investment, event?: Event): void {
     if (this.options.hideOnPurchase)
-      this.hideOthers();
-    this.purchases.push(investment.id);
+      this.hideInvestments();
+    if (investment) {
+      investment.purchase(this.round);
+    } else {
+      this.investmentRoot.pass(this.round);
+    }
     this.updateUrl();
+    this.startRound();
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
+  public pass(event?: Event): void {
+    this.purchase(null, event);
+  }
+
+  public startOver(event?: Event): void {
+    // TODO Add confirmation
+    this.hideInvestments();
+    this.resetState();
+    this.updateUrl();
+    this.startRound();
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
+  public toggleAdvice(event?: Event): void {
+    this.adviceHidden = !this.adviceHidden;
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
+  public setAdviceHidden(hide: boolean = true, event?: Event): void {
+    this.adviceHidden = hide;
     // To disable background click
     if (event)
       event.stopPropagation();
@@ -151,36 +195,45 @@ export class GameComponent implements OnDestroy, OnInit {
     event.stopPropagation();
   }
 
-
-
-
   /**************************************
-   * OTHER METHODS                      *
+   * URL PARAMS                         *
    **************************************/
 
   public updateUrl(): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
       [DATA_KEY_VERSION]:   this.shared.settings.version,
-      [DATA_KEY_ONBOARDED]: this._encodeIds(this.findInvestments(i => this.isOnboarded(i)).map(i => i.id)),
-      [DATA_KEY_PURCHASES]: this._encodeIds(this.purchases)
+      [DATA_KEY_ONBOARDED]: this._encodeIds(this.investmentRoot.categories.filter(c => c.isOnboarded).map(c => c.id)),
+      [DATA_KEY_PURCHASES]: this._encodeIds(this.purchasesAndPassedRounds.map(p => p.id))
     }]);
   }
 
   public readParams(): void {
+    // Reset first
+    this.resetState();
     // Only load purchases from route data if the application versions match
     // Otherwise reset the state to handle the going back to an url without params
     if (this.route.snapshot.params?.[DATA_KEY_VERSION] && 
       this.route.snapshot.params[DATA_KEY_VERSION] == this.shared.settings.version) {
-      if (this.route.snapshot.params[DATA_KEY_PURCHASES])
-        this.purchases = this._decodeIds(this.route.snapshot.params[DATA_KEY_PURCHASES]);
+      if (this.route.snapshot.params[DATA_KEY_PURCHASES]) {
+        const purchases = this._decodeIds(this.route.snapshot.params[DATA_KEY_PURCHASES]);
+        for (let i = 0; i < purchases.length; i++) {
+          const round = i + ROUND_BASE;
+          if (purchases[i] === NULL_INVESTMENT_ID) {
+            this.investmentRoot.pass(round);
+          } else {
+            this.getInvestment(purchases[i]).purchase(round);
+          }
+        }
+      }
       if (this.route.snapshot.params[DATA_KEY_ONBOARDED]) {
         let ids = this._decodeIds(this.route.snapshot.params[DATA_KEY_ONBOARDED]);
-        this.findInvestments(i => ids.includes(i.id)).forEach(i => i.onboardingStatus = ONBOARDING_COMPLETE);
+        this.investmentRoot.categories.filter(c => ids.includes(c.id))
+                                      .forEach(c => c.completeOnboarding());
       }
-    } else {
-      this.resetState();
     }
+    // This resets the screen
+    this.startRound();
   }
 
   private _encodeIds(list: Array<InvestmentId>): string {
@@ -190,30 +243,20 @@ export class GameComponent implements OnDestroy, OnInit {
     return text.split(DATA_SEPARATOR).map(s => parseInt(s));
   }
 
+  public startRound(): void {
+    this.adviceHidden = false;
+  }
+
   public resetState(): void {
-    this.purchases = new Array<InvestmentId>();
-    recursiveForEach(this.investmentRoot, i => {
-      delete i.active;
-      if (i.onboardingStatus === ONBOARDING_ACTIVE || i.onboardingStatus === ONBOARDING_COMPLETE)
-        i.onboardingStatus = ONBOARDING_NEEDED;
-    });
+    this.investmentRoot.reset();
   }
 
-  /*
-   * Add parent property to investments
-   */
-  private _preprocessInvestments(root: Investment): void {
-    const _setParent = (parent: Investment | null, child: Investment): void => {
-      if (parent != null)
-        child.parent = parent;
-      if (child.children?.length > 0)
-        child.children.forEach(grandChild => _setParent(child, grandChild));
-    }
-    _setParent(null, root);
-  }
+  /**************************************
+   * OTHER METHODS                      *
+   **************************************/
 
-  public get investmentCategories(): Array<Investment> {
-    return this.investmentRoot.children;
+  public get investmentCategories(): Array<InvestmentCategory> {
+    return this.investmentRoot.children as Array<InvestmentCategory>;
   }
 
   public get balance(): number {
@@ -221,15 +264,34 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public get spentBalance(): number {
-    return sum(this.purchases.map(p => this.getInvestment(p).price));
+    // We include passed rounds here, as we might defined a cost for passing a round
+    return sum(this.purchasesAndPassedRounds.map(p => p.price));
   }
 
+  /*
+   * Note that round is ROUND_BASE-based (= 1)
+   */
+  public get round(): number {
+    return this.purchasesAndPassedRounds.length + ROUND_BASE;
+  }
+  
   public get roundsLeft(): number {
-    return this.shared.settings.rounds - this.purchases.length;
+    return this.shared.settings.rounds - this.round;
   }
 
   public get returns(): number {
-    return this.getTotalReturns(this.purchases);
+    return this.getTotalReturns(this.purchasesAndPassedRounds);
+  }
+
+  public get purchases(): Array<Investment> {
+    return this.investmentRoot.purchases;
+  }
+
+  /*
+   * Passed rounds are a special subclass of Investment
+   */
+  public get purchasesAndPassedRounds(): Array<Investment> {
+    return this.investmentRoot.purchasesAndPassedRounds;
   }
 
   /*
@@ -237,12 +299,53 @@ export class GameComponent implements OnDestroy, OnInit {
    */
   public get accumulatedReturns(): number {
     let total = 0;
-    if (this.purchases.length > 0) {
-      for (let i = 0; i < this.purchases.length; i++) {
-        total += this.getTotalReturns(this.purchases.slice(0, i));
+    const purchases = this.purchasesAndPassedRounds;
+    if (purchases.length > 0) {
+      for (let i = 0; i < purchases.length; i++) {
+        total += this.getTotalReturns(purchases.slice(0, i));
       }
     }
     return total;
+  }
+
+  public get canPurchaseSomething(): boolean {
+    return this.investmentRoot.investments.filter(i => !i.purchased && this.canPurchase(i)).length > 0;
+  }
+
+  /*
+   * Get the owner's feedback as sentiment number and advice message.
+   * A sentiment of -1 means worried; 0, neutral; 1, happy; and 2, extatic.
+   */
+  public get feedback(): {sentiment: number, advice: string, imageUrl: string} {
+    let sentiment: number = 0;
+    let advice: string = null;
+    // TODO Implement real functionality
+    if (this.round === ROUND_BASE) {
+      sentiment = 1;
+      advice = "Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain.";
+    } else if (!this.canPurchaseSomething) {
+      sentiment = -1;
+      advice = "Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.";
+    } else if (this.roundsLeft === 12) {
+      sentiment = 1;
+      advice = "One more year to go!";
+    } else if (this.roundsLeft === 6) {
+      sentiment = -1;
+      advice = "Only six months to go on the project!";
+    } else if (this.roundsLeft < 7) {
+      sentiment = -1;
+    }
+    // TODO Remove this
+    if (!advice) {
+      sentiment = (this.round % 4) - 1;
+      if (this.round % 3 === 0)
+        advice = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolorem!";
+    }
+	  return {
+      sentiment: sentiment,
+      advice: advice === null ? null : this.t(advice),
+      imageUrl: AVATAR_IMAGES[sentiment] ?? null
+    }
   }
 
   public t(text: string | LocalizedString): string {
@@ -250,101 +353,65 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /*
-   * Check if a given category needs onboarding
+   * Check if a subcategory has any of its investments open
    */
-  public needsOnboarding(investment: Investment): boolean {
-    return investment.onboardingStatus === ONBOARDING_NEEDED;
-  }
-
-  public isOnboarded(investment: Investment): boolean {
-    return investment.onboardingStatus === ONBOARDING_COMPLETE || investment.onboardingStatus === ONBOARDING_REACTIVATED;
-  }
-
-  public onboardingActive(investment: Investment): boolean {
-    return investment.onboardingStatus === ONBOARDING_ACTIVE || investment.onboardingStatus === ONBOARDING_REACTIVATED;
-  }
-
-  public onboardingAvailable(investment: Investment): boolean {
-    return investment.onboardingStatus === ONBOARDING_NEEDED || investment.onboardingStatus === ONBOARDING_COMPLETE;
+  public hasActiveInvestments(investment: InvestmentCategory): boolean {
+    return investment.investments.filter(i => i.active).length > 0;
   }
 
   /*
-   * Check if a subcategory has any of its investments open
+   * Get the flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) for a dataPipe
    */
-  public hasActiveInvestments(investment: Investment): boolean {
-    for (let i = 0; i < investment.children?.length; i++) {
-      if (investment.children[i].active)
-        return true;
-    }
-    return false;
+  public getPipeFlow(index: number): number {
+    if (index > this.investmentRoot.children.length - 2)
+      throw new Error(`Index ${index} for getPipeFlow out of range.`);
+    // TODO Implement proper behaviour
+    let baseValue: number = index >  0 ? this.getPipeFlow(index - 1) : this.options.pipeFlowScale;
+    let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
+    return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
   }
 
   /*
    * Hide a subcategory or an investment and all it's descendants
    * If not argument given, all are hidden
    */
-  public hide(investment: Investment = this.investmentRoot): void {
-    recursiveForEach(investment, i => delete i.active);
+  public hide(node: InvestmentNode = this.investmentRoot): void {
+    node.active = false;
   }
 
   /*
    * Call this with all clicks except investment categories
    */
-  public hideOthers(): void {
+  public hideInvestments(): void {
     this.hide();
+    this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
+                                .forEach(c => (c as InvestmentCategory).completeOnboarding());
   }
 
   public canPurchase(investment: Investment): boolean {
     return investment.price <= this.balance;
   }
 
-  public isPurchased(investment: Investment): boolean {
-    return this.purchases.includes(investment.id);
-  }
-
-  /*
-   * Search the investments tree based on a rule and return the matching investments.
-   * If not rule is specified returns all Investments
-   * TODO: Allow for just finding the first result
-   */
-  public findInvestments(rule: (Investment) => boolean = () => true, maxDepth: number = null): Array<Investment> {
-    let found = new Array<Investment>();
-    recursiveForEach(this.investmentRoot, i => {
-      if (rule(i))
-        found.push(i);
-    }, maxDepth);
-    return found;
-  }
-
   public getInvestment(id: InvestmentId): Investment {
-    let res = this.findInvestments(i => i.id == id);
+    let res = this.investmentRoot.investments.filter(i => i.id == id);
     if (res.length < 1)
       throw new Error(`Could not find Investment with id '${id}'.`);
     return res[0];
   }
 
-  public getTotalReturns(purchases: Array<InvestmentId>): number {
+  public getTotalReturns(purchases: Array<Investment>): number {
     return this.getInvestmentReturns(purchases) + this.getComboReturns(purchases);
   }
 
-  public getInvestmentReturns(purchases: Array<InvestmentId>): number {
-    return sum(purchases.map(p => this.getInvestment(p).returns || 0));
+  public getInvestmentReturns(purchases: Array<Investment>): number {
+    return sum(purchases.map(p => p.returns || 0));
   }
 
-  public getComboReturns(purchases: Array<InvestmentId>): number {
-    return sum(this.investmentCombos.map(c => this.applyCombo(c, purchases)));
+  public getComboReturns(purchases: Array<Investment>): number {
+    return sum(this.investmentCombos.map(c => c.apply(purchases)));
   }
 
-  /*
-   * Test the combo against purchases and return returns if combo is applicable or 0 if not.
-   */
-  public applyCombo(combo: InvestmentCombo, purchases: Array<InvestmentId>): number {
-    for (let i = 0; i < combo.investments.length; i++) {
-      if (!purchases.includes(combo.investments[i]))
-        return 0;
-    }
-    return combo.returns;
-  }
+  
 
 }
 
