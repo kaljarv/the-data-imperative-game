@@ -363,12 +363,21 @@ export class GameComponent implements OnDestroy, OnInit {
    * Get the flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) for a dataPipe
    */
   public getPipeFlow(index: number): number {
-    if (index > this.investmentRoot.children.length - 2)
+    if (index > this.investmentRoot.children.length - 1)
       throw new Error(`Index ${index} for getPipeFlow out of range.`);
     // TODO Implement proper behaviour
-    let baseValue: number = index >  0 ? this.getPipeFlow(index - 1) : this.options.pipeFlowScale;
+    let baseValue: number = index === 0 ? this.options.pipeFlowScale : this.getPipeFlow(index - 1);
     let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
     return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
+  }
+
+  /*
+   * Get the reverse flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) 
+   * of the total flow for a dataPipe i.e. the proportion of data that is not utilized by the next block
+   */
+  public getReversePipeFlow(index: number): number {
+    return this.getPipeFlow(index) == 0 ? 0 : 
+           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * this.options.pipeFlowScale;
   }
 
   /*

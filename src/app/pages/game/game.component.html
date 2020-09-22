@@ -90,7 +90,14 @@
          class="dataPipe dataPipe--{{ i }}">
       <div *ngIf="getPipeFlow(i) > 0"
            [style.height]="getPipeFlow(i) + '%'"
-           class="flow"></div>
+           class="flow">
+        <div *ngIf="getReversePipeFlow(i) < 100"
+             [style.height]="100 - getReversePipeFlow(i) + '%'"
+             class="forward"></div>
+        <div *ngIf="getReversePipeFlow(i) > 0"
+             [style.height]="getReversePipeFlow(i) + '%'"
+             class="reverse"></div>
+      </div>
     </div>
 
     <!-- We need to loop again for these as we cannot enclose the subcategory elements within their parents

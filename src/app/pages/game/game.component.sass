@@ -251,17 +251,29 @@ button:focus
   display: grid
   align-items: center
 
-  .flow
-    // background-color: $color-accent
-    background: linear-gradient(270deg, #{color.change($color-accent, $alpha:0.25)}, #{$color-accent}, #{color.change($color-accent, $alpha:0.25)})
-    background-size: 200% 100%
-    animation: DataFlow 2s linear infinite
+  .flow 
+    > div
+      // background-color: $color-accent
+      background: linear-gradient(270deg, #{color.change($color-accent, $alpha:0.25)}, #{$color-accent}, #{color.change($color-accent, $alpha:0.25)})
+      background-size: 200% 100%
+      &.forward
+        animation: DataFlow 2s linear infinite
+      &.reverse
+        animation: DataFlowReverse 2s linear infinite
 
 @keyframes DataFlow
   0%
     background-position: 200% 0%
   100%
     background-position: 0% 0%
+
+@keyframes DataFlowReverse
+  0%
+    background-position: 200% 0%
+  50%
+    background-position: 100% 0%
+  100%
+    background-position: 200% 0%
 
 .dataPipe--0
   grid-area: main / gap-1
