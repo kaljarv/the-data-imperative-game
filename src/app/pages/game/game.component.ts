@@ -99,7 +99,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public categoryClick(category: InvestmentCategory, event: Event = null): void {
     if (category.needsOnboarding) {
-      this.startOnboarding(category);
+      this.startOnboarding(category, event);
     }
     // Disable background click if this investment is active,
     // otherwise bg click is okay
@@ -384,8 +384,8 @@ export class GameComponent implements OnDestroy, OnInit {
    */
   public hideInvestments(): void {
     this.hide();
-    this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
-                                .forEach(c => (c as InvestmentCategory).completeOnboarding());
+    // this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
+    //                             .forEach(c => (c as InvestmentCategory).completeOnboarding());
   }
 
   public canPurchase(investment: Investment): boolean {
