@@ -40,6 +40,9 @@ const AVATAR_IMAGES = {
 function sum(arr: Array<number>): number {
   return arr.reduce((a, b) => a + b, 0);
 }
+function clamp(num: number, min: number = null, max: number = null): number {
+  return num <= min ? min : num >= max ? max : num;
+}
 
 @Component({
   selector: 'app-game',
@@ -319,38 +322,67 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /*
-   * Get the owner's feedback as sentiment number and advice message.
+   * Get the owner's feedback as sentiment number, sentiment image url, advice message
+   * and a possible warning.
    * A sentiment of -1 means worried; 0, neutral; 1, happy; and 2, extatic.
    */
-  public get feedback(): {sentiment: number, advice: string, imageUrl: string} {
+  public get feedback(): {sentiment: number, advice: string, warning: string | null, imageUrl: string} {
     let sentiment: number = 0;
-    let advice: string = null;
-    // TODO Implement real functionality
+    let advice: string = "";
+    let warning: string = "";
+
+    // 1. Overriding cases
     if (this.round === ROUND_BASE) {
+      // First round
       sentiment = 1;
-      advice = "Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain.";
-    } else if (!this.canPurchaseSomething) {
-      sentiment = -1;
-      advice = "Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.";
-    } else if (this.roundsLeft === 12) {
-      sentiment = 1;
-      advice = "One more year to go!";
-    } else if (this.roundsLeft === 6) {
-      sentiment = -1;
-      advice = "Only six months to go on the project!";
-    } else if (this.roundsLeft < 7) {
-      sentiment = -1;
+      advice += this.t("Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain.");
+    } else if (this.roundsLeft === 0) {
+      // Last round
+      // TODO Add final sentiment
+      advice += this.t("This is it! Let’s see how our investments worked out.");
+      warning += this.t("Click anywhere to see report.");
+    } else {
+
+      // 2. Messages that are always prepended if applicable
+      if (this.roundsLeft === 12) {
+        advice += this.t("One more year to go!") + " ";
+      } else if (this.roundsLeft === 6) {
+        sentiment -= 1;
+        advice += this.t("Only six months to go on the project!") + " ";
+      } 
+
+      // 3. Combos
+      const newCmb = this.getNewlyCompletedCombos();
+      const nearCmb = this.getNearlyCompletedCombos();
+      if (newCmb.length > 0) {
+        sentiment += 1;
+        advice += this.t("Wow! That investment really seems to pay off!") + " ";
+      } else if (nearCmb.length > 0) {
+        advice += this.t("It seems we are not utilising these investments as well as we could: ") +
+                  nearCmb[0].investments.map(id => this.getInvestment(id))
+                                        .filter(i => i.purchased)
+                                        .map(i => this.t(i.title))
+                                        .join(", ") + ". ";
+      }
+
+      // 4. Warnings
+      if (!this.canPurchaseSomething) {
+        sentiment -= 1;
+        warning += this.t("Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.");
+      }
     }
+  
     // TODO Remove this
-    if (!advice) {
+    if (advice == "") {
       sentiment = (this.round % 4) - 1;
       if (this.round % 3 === 0)
-        advice = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolorem!";
+        advice += "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolorem!";
     }
 	  return {
-      sentiment: sentiment,
-      advice: advice === null ? null : this.t(advice),
-      imageUrl: AVATAR_IMAGES[sentiment] ?? null
+      sentiment: clamp(sentiment, -1, 2),
+      advice:    advice == "" ? null : advice,
+      warning:   warning == "" ? null : warning,
+      imageUrl:  AVATAR_IMAGES[sentiment] ?? null
     }
   }
 
@@ -426,57 +458,27 @@ export class GameComponent implements OnDestroy, OnInit {
     return sum(this.investmentCombos.map(c => c.apply(purchases)));
   }
 
+  public getCompletedCombos(purchases: Array<Investment>): Array<InvestmentCombo> {
+    return this.investmentCombos.filter(c => c.countMissing(purchases) === 0);
+  }
   
-
-}
-
-/*
-public get activeSubCategory(): Investment | null {
-  const res = this.findInvestments(i => i.active, 2);
-  if (!res.length)
-    return null;
-  return res[0];
-}
-
-public get activeInvestment(): Investment | null {
-  const subCat = this.activeSubCategory;
-  if (!subCat?.children?.length)
-    return null;
-  for (let i = 0; i < subCat.children.length; i++) {
-    if (subCat.children[i].active)
-      return subCat.children[i];
+  /*
+   * Get combos completed by the last purchase
+   */
+  public getNewlyCompletedCombos(): Array<InvestmentCombo> {
+    if (this.purchasesAndPassedRounds.length < 1)
+      return [];
+    const combosBefore = this.getCompletedCombos(this.purchasesAndPassedRounds.slice(0, -1));
+    return this.getCompletedCombos(this.purchasesAndPassedRounds)
+               .filter(c => !combosBefore.includes(c));
   }
-  return null;
-}
-*/
 
-/*
-public includesPath(list: Array<InvestmentId>, investment: InvestmentId): boolean {
-  for (let i = 0; i < list.length; i++) {
-    if (this.eqPath(list[i], investment)) {
-      return true;
-    }
+  /*
+   * Get combos that can be completed by purchasing one more investment in descending order of returns
+   */
+  public getNearlyCompletedCombos(): Array<InvestmentCombo> {
+    return this.investmentCombos.filter(c => c.countMissing(this.purchases) === 1)
+                                .sort((a, b) => b.returns - a.returns);
   }
-  return false;
-}
 
-public eqPath(a: InvestmentId, b: InvestmentId): boolean {
-  if (a.length !== b.length) {
-    return false;
-  }
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) {
-      return false;
-    }
-  }
-  return true;
 }
-
-public deletePath(list: Array<InvestmentId>, investment: InvestmentId): boolean {
-  for (let i = 0; i < list.length; i++) {
-    if (this.eqPath(list[i], investment)) {
-      return delete list[i];
-    }
-  }
-}
-*/

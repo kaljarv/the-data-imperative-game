@@ -3,13 +3,14 @@
   <div id="balance"
        class="status">
     <span class="title">{{ t("Balance") }}</span>
-    <span class="value">{{ balance | currency:null:'symbol':'1.0' }}</span>
+    <span class="value"><app-number-tracker [end]="balance"></app-number-tracker></span>
   </div>
 
   <div id="returns"
        class="status">
     <span class="title">{{ t("Returns/month") }}</span>
-    <span class="value">{{ returns | currency:null:'symbol':'1.0' }}</span>
+    <span class="value"><app-number-tracker [end]="returns"
+                                            stepSize="21"></app-number-tracker></span>
   </div>
 
   <div id="round"
@@ -21,7 +22,7 @@
   <div id="purchases"
        class="status">
     <span class="title">{{ t("Investments") }}</span>
-    <span class="value">{{ spentBalance | currency:null:'symbol':'1.0' }}</span>
+    <span class="value"><app-number-tracker [end]="spentBalance"></app-number-tracker></span>
   </div>
 
 

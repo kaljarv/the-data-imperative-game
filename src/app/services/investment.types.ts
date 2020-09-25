@@ -278,14 +278,23 @@ export class InvestmentCombo {
   ) {}
 
   /*
+   * Test how many investements are missing from the combo
+   */
+  public countMissing(investments: Array<Investment>): number {
+    const ids = investments.map(i => i.id);
+    let missing = this.investments.length;
+    for (let i = 0; i < this.investments.length; i++) {
+      if (ids.includes(this.investments[i]))
+        missing -= 1;
+    }
+    return missing;
+  }
+
+  /*
    * Test the combo against purchases and return returns if combo is applicable or 0 if not.
    */
   public apply(investments: Array<Investment>): number {
-    const ids = investments.map(i => i.id);
-    for (let i = 0; i < this.investments.length; i++) {
-      if (!ids.includes(this.investments[i]))
-        return 0;
-    }
-    return this.returns;
+    return this.countMissing(investments) === 0 ? this.returns : 0;
   }
+
 }
