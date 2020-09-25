@@ -129,7 +129,9 @@ export class GameComponent implements OnDestroy, OnInit {
     this.setAdviceHidden(true);
     this.hideInvestments();
     category.completeOnboarding();
-    this.updateUrl();
+    // This is disabled as it makes boxes close and dialogs disappear in unwanted ways.
+    // The drawback is that the onboarding status is only saved after a round is completed.
+    // this.updateUrl();
     // To disable background click
     if (event)
       event.stopPropagation();
@@ -256,8 +258,8 @@ export class GameComponent implements OnDestroy, OnInit {
     this.adviceHidden = false;
   }
 
-  public resetState(): void {
-    this.investmentRoot.reset();
+  public resetState(resetOnboarding: boolean = false): void {
+    this.investmentRoot.reset(resetOnboarding);
   }
 
   /**************************************

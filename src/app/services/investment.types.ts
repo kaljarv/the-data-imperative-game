@@ -201,10 +201,10 @@ export class InvestmentRoot extends InvestmentCategory {
    * Reset the whole tree to initial values
    * Call this before loading a state from url params
    */
-  public reset(): void {
+  public reset(resetOnboarding: boolean = false): void {
     this.descendants.forEach(i => {
       i.active = false;
-      if (i instanceof InvestmentCategory)
+      if (resetOnboarding && i instanceof InvestmentCategory)
         i.resetOnboarding();
       if (i instanceof Investment)
         i.depurchase();

@@ -38,6 +38,10 @@
        (click)="toggleAdvice($event)"
        class="sentiment-{{ feedback.sentiment }}">
     {{ feedback.advice }} <!-- Note that advice is already localized -->
+    <div *ngIf="feedback.warning"
+         class="warning">
+      {{ feedback.warning }} <!-- Note that warning is already localized -->
+    </div>
   </div>
 
   <ng-container *ngFor="let category of investmentCategories; index as i">
