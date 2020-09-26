@@ -1,9 +1,11 @@
 import { Component, 
          Input, 
          OnDestroy } from '@angular/core';
-import { Subject,
+import { of,
+         Subject,
          timer } from 'rxjs';
 import { endWith,
+         map,
          mapTo,
          switchMap, 
          startWith, 
@@ -28,13 +30,36 @@ import { endWith,
   `
 })
 export class NumberTrackerComponent implements OnDestroy {
+  /*
+   * The final value
+   */
   @Input()
   set end(endRange: number) {
     this._counterSub$.next(endRange);
   }
+
+  /* 
+   * Increment time interval
+   */
   @Input() timeInterval = 20;
+
+  /*
+   * Increment size
+   */
   @Input() stepSize = 101;
+  
+  /*
+   * Whether to use currency formatting. See template
+   */
   @Input() isCurrency = true;
+
+  /*
+   * Skip tracking and show the result immediately
+   * This has to be checked within the timer pipe as the end input will be set before
+   * skipTracking which causes problems otherwise.
+   */
+  @Input() skipTracking = false;
+
   public currentNumber = 0;
   private _counterSub$ = new Subject();
   private _onDestroy$ = new Subject();
@@ -44,12 +69,12 @@ export class NumberTrackerComponent implements OnDestroy {
       .pipe(
         switchMap(endRange => {
           return timer(0, this.timeInterval).pipe(
-            mapTo(this.positiveOrNegative(endRange, this.currentNumber)),
-            startWith(this.currentNumber),
-            scan((acc: number, curr: number) => acc + curr),
-            takeWhile(this.isApproachingRange(endRange, this.currentNumber)),
-            endWith(endRange)
-          )
+                    mapTo(this.positiveOrNegative(endRange, this.currentNumber)),
+                    startWith(this.currentNumber),
+                    scan((acc: number, curr: number) => this.skipTracking ? endRange : acc + curr),
+                    takeWhile(this.isApproachingRange(endRange, this.currentNumber)),
+                    endWith(endRange)
+                  )
         }),
         takeUntil(this._onDestroy$)
       )

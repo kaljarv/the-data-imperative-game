@@ -3,13 +3,9 @@
 
 
 // TODO:
-// Returns badge popup
-// Click anywhere to go to report
-// close modals (except) method to call whenever clicking, bg close all
 // wedge for bubble
 // hovers
-// progress bar for months left
-// animations
+// maybe highlight increasing numbers
 // calculate final sentiment
 
 // VARIABLES
@@ -304,6 +300,7 @@ button:focus
   button    
     border-color: $color-onPrimary
     position: relative // Needed for ::before
+    transition: border $animationTiming-M
     &.purchased
       &::before
         content: $url-checkmark
@@ -450,3 +447,20 @@ button:focus
     background-color: $color-onPrimary
     // border-color: $color-accent
     // color: $color-accent
+
+#report
+  grid-area: mid / col-1 / bottom-edge / right-edge
+  background-color: color.change($color-onPrimary, $alpha: $alpha-overlay)
+  border-radius: $borderRadius-M
+  box-shadow: $boxShadow-M
+  margin-top: $margin-XL
+  padding: $margin-XL
+
+.modal
+  z-index: $zIndex-10
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  cursor: pointer

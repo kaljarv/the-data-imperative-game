@@ -1,180 +1,207 @@
-<div id="grid">
+<div id="grid"
+     @fadeInOut>
 
   <div id="balance"
        class="status">
     <span class="title">{{ t("Balance") }}</span>
-    <span class="value"><app-number-tracker [end]="balance"></app-number-tracker></span>
+    <span class="value"><app-number-tracker [end]="balance"
+                                            [skipTracking]="isFirstRound"></app-number-tracker></span>
+  </div>
+
+  <div id="round"
+       class="status"
+       [style]="roundsLeftStyle">
+    <span class="title">{{ t("Months remaining") }}</span>
+    <span class="value">{{ roundsLeft }}</span>
   </div>
 
   <div id="returns"
        class="status">
     <span class="title">{{ t("Returns/month") }}</span>
     <span class="value"><app-number-tracker [end]="returns"
+                                            [skipTracking]="isFirstRound"
                                             stepSize="21"></app-number-tracker></span>
-  </div>
-
-  <div id="round"
-       class="status">
-    <span class="title">{{ t("Months remaining") }}</span>
-    <span class="value">{{ roundsLeft }}</span>
   </div>
 
   <div id="purchases"
        class="status">
     <span class="title">{{ t("Investments") }}</span>
-    <span class="value"><app-number-tracker [end]="spentBalance"></app-number-tracker></span>
+    <span class="value"><app-number-tracker [end]="spentBalance"
+                                            [skipTracking]="isFirstRound"></app-number-tracker></span>
   </div>
 
+  <ng-container *ngIf="!showReport">
 
-  <img *ngIf="feedback.imageUrl"
-       id="avatar"
-       [src]="feedback.imageUrl"
-       (click)="toggleAdvice($event)"
-       class="sentiment-{{ feedback.sentiment }}"
-       [class.hasAdvice]="feedback.advice" />
+    <img *ngIf="feedback.imageUrl"
+          id="avatar"
+          [src]="feedback.imageUrl"
+          (click)="toggleAdvice($event)"
+          class="sentiment-{{ feedback.sentiment }}"
+          [class.hasAdvice]="feedback.advice"
+          @fadeInOut />
 
-  <div *ngIf="feedback.advice && !adviceHidden"
-       id="advice"
-       (click)="toggleAdvice($event)"
-       class="sentiment-{{ feedback.sentiment }}">
-    {{ feedback.advice }} <!-- Note that advice is already localized -->
-    <div *ngIf="feedback.warning"
-         class="warning">
-      {{ feedback.warning }} <!-- Note that warning is already localized -->
-    </div>
-  </div>
-
-  <ng-container *ngFor="let category of investmentCategories; index as i">
-
-    <div (click)="categoryClick(category, $event)"
-         class="category category--{{ i }}"
-         [class.needsOnboarding]="category.needsOnboarding">
-      <h3>
-        {{ t(category.title) }}
-      </h3>
-      <div *ngIf="!category.needsOnboarding && category.onboardingAvailable"
-           (click)="startOnboarding(category, $event)"
-           class="infoButton">
-        {{ t("i") }}
+    <div *ngIf="feedback.advice && !adviceHidden"
+        id="advice"
+        (click)="toggleAdvice($event)"
+        class="sentiment-{{ feedback.sentiment }}
+        @fadeInOut">
+      {{ feedback.advice }} <!-- Note that advice is already localized -->
+      <div *ngIf="feedback.warning"
+          class="warning">
+        {{ feedback.warning }} <!-- Note that warning is already localized -->
       </div>
-      <div *ngIf="!category.needsOnboarding"
-           class="content">
-        <div *ngIf="!category.onboardingActive"
-             class="children">
+    </div>
 
-            <button *ngFor="let subcategory of category.children"
-                    (click)="show(subcategory, $event)"
-                    [class.active]="subcategory.active"
+    <ng-container *ngFor="let category of investmentCategories; index as i">
+
+      <div (click)="categoryClick(category, $event)"
+           class="category category--{{ i }}"
+           [class.needsOnboarding]="category.needsOnboarding"
+           @fadeInOut>
+        <h3>
+          {{ t(category.title) }}
+        </h3>
+        <div *ngIf="!category.needsOnboarding && category.onboardingAvailable"
+            (click)="startOnboarding(category, $event)"
+            class="infoButton">
+          {{ t("i") }}
+        </div>
+        <div *ngIf="!category.needsOnboarding"
+             class="content">
+          <div *ngIf="!category.onboardingActive"
+               class="children"
+               @fadeInOut>
+
+              <button *ngFor="let subcategory of category.children"
+                      (click)="show(subcategory, $event)"
+                      [class.active]="subcategory.active"
+                      type="button">
+                <span class="title">
+                  {{ t(subcategory.title) }}
+                </span>
+                <div class="investmentMarkers">
+                  <a *ngFor="let investment of subcategory.children"
+                    (click)="show(investment, $event)"
+                    [class.purchased]="investment.purchased"
+                    [class.active]="investment.active"
+                    [title]="t(investment.title)"></a>
+                </div>
+              </button>
+
+          </div>
+          <div *ngIf="category.onboardingActive"
+               class="description"
+               @fadeInOut>
+            {{ t(category.description) }}
+            <button (click)="closeOnboarding(category, $event)"
                     type="button">
-              <span class="title">
-                {{ t(subcategory.title) }}
-              </span>
-              <div class="investmentMarkers">
-                <a *ngFor="let investment of subcategory.children"
-                   (click)="show(investment, $event)"
-                   [class.purchased]="investment.purchased"
-                   [class.active]="investment.active"
-                   [title]="t(investment.title)"></a>
-              </div>
+              {{ t("Start investing") }}
             </button>
-
-        </div>
-        <div *ngIf="category.onboardingActive"
-            class="description">
-          {{ t(category.description) }}
-          <button (click)="closeOnboarding(category, $event)"
-                  type="button">
-            {{ t("Start investing") }}
-          </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- The data pipe -->
-    <div *ngIf="i < 3"
-         class="dataPipe dataPipe--{{ i }}">
-      <div *ngIf="getPipeFlow(i) > 0"
-           [style.height]="getPipeFlow(i) + '%'"
-           class="flow">
-        <div *ngIf="getReversePipeFlow(i) < 100"
-             [style.height]="100 - getReversePipeFlow(i) + '%'"
-             class="forward"></div>
-        <div *ngIf="getReversePipeFlow(i) > 0"
-             [style.height]="getReversePipeFlow(i) + '%'"
-             class="reverse"></div>
+      <!-- The data pipe -->
+      <div *ngIf="i < 3"
+          class="dataPipe dataPipe--{{ i }}">
+        <div *ngIf="getPipeFlow(i) > 0"
+            [style.height]="getPipeFlow(i) + '%'"
+            class="flow">
+          <div *ngIf="getReversePipeFlow(i) < 100"
+              [style.height]="100 - getReversePipeFlow(i) + '%'"
+              class="forward"></div>
+          <div *ngIf="getReversePipeFlow(i) > 0"
+              [style.height]="getReversePipeFlow(i) + '%'"
+              class="reverse"></div>
+        </div>
       </div>
-    </div>
 
-    <!-- We need to loop again for these as we cannot enclose the subcategory elements within their parents
-         because all elements placed in the grid need to be direct children of the grid container. -->
-    <ng-container *ngIf="category.active">
-      <ng-container *ngFor="let subcategory of category.children">
-        <div *ngIf="subcategory.active"
-             (click)="catchClick($event)"
-             class="subcategory subcategory--of-{{ i }}"
-             [class.hasActive]="hasActiveInvestments(subcategory)">
-          <button *ngFor="let investment of subcategory.children"
-                  (click)="show(investment, $event)"
+      <!-- We need to loop again for these as we cannot enclose the subcategory elements within their parents
+          because all elements placed in the grid need to be direct children of the grid container. -->
+      <ng-container *ngIf="category.active">
+        <ng-container *ngFor="let subcategory of category.children">
+          <div *ngIf="subcategory.active"
+               (click)="catchClick($event)"
+               class="subcategory subcategory--of-{{ i }}"
+               [class.hasActive]="hasActiveInvestments(subcategory)"
+               @fadeInOut>
+            <button *ngFor="let investment of subcategory.children"
+                    (click)="show(investment, $event)"
+                    [class.purchased]="investment.purchased"
+                    [class.active]="investment.active"
+                    type="button">
+              {{ t(investment.title) }}
+            </button>
+          </div>
+
+          <!-- Ditto for investment elements -->
+          <ng-container *ngIf="subcategory.active">
+            <ng-container *ngFor="let investment of subcategory.children">
+
+              <div *ngIf="investment.active"
+                  (click)="catchClick($event)"
+                  class="investment investment--of-{{ i }}"
                   [class.purchased]="investment.purchased"
-                  [class.active]="investment.active"
-                  type="button">
-            {{ t(investment.title) }}
-          </button>
-        </div>
-
-        <!-- Ditto for investment elements -->
-        <ng-container *ngIf="subcategory.active">
-          <ng-container *ngFor="let investment of subcategory.children">
-
-            <div *ngIf="investment.active"
-                 (click)="catchClick($event)"
-                 class="investment investment--of-{{ i }}"
-                 [class.purchased]="investment.purchased">
-              <div class="outlineWrapper">
-                <h5>
-                  {{ t(investment.longTitle || investment.title) }}
-                </h5>
-                <p class="description">
-                  {{ t(investment.description) }}
-                </p>
-                <button *ngIf="!investment.purchased"
-                        (click)="purchase(investment, $event)"
-                        [disabled]="!canPurchase(investment)"
-                        type="button">
-                    {{ t("Invest") }}
-                    {{ investment.price | currency:null:'symbol':'1.0' }}
-                </button>
-                <button *ngIf="investment.purchased"
-                        disabled="true"
-                        type="button"
-                        class="purchased">
-                    {{ t("Purchased") }}
-                </button>
-                <p *ngIf="!investment.purchased && !canPurchase(investment)"
-                   class="warning">
-                  {{ t("You don’t have enough funds!") }}
-                </p>
+                  @fadeInOut>
+                <div class="outlineWrapper">
+                  <h5>
+                    {{ t(investment.longTitle || investment.title) }}
+                  </h5>
+                  <p class="description">
+                    {{ t(investment.description) }}
+                  </p>
+                  <button *ngIf="!investment.purchased"
+                          (click)="purchase(investment, $event)"
+                          [disabled]="!canPurchase(investment)"
+                          type="button">
+                      {{ t("Invest") }}
+                      {{ investment.price | currency:null:'symbol':'1.0' }}
+                  </button>
+                  <button *ngIf="investment.purchased"
+                          disabled="true"
+                          type="button"
+                          class="purchased">
+                      {{ t("Purchased") }}
+                  </button>
+                  <p *ngIf="!investment.purchased && !canPurchase(investment)"
+                    class="warning">
+                    {{ t("You don’t have enough funds!") }}
+                  </p>
+                </div>
               </div>
-            </div>
 
-          </ng-container>
-        </ng-container><!-- /let investment of subcategory.children -->
+            </ng-container>
+          </ng-container><!-- /let investment of subcategory.children -->
 
-      </ng-container>
-    </ng-container><!-- /let subcategory of category.children -->
+        </ng-container>
+      </ng-container><!-- /let subcategory of category.children -->
 
-  </ng-container><!-- /let category of investmentCategories -->
+    </ng-container><!-- /let category of investmentCategories -->
 
-  <button id="reset"
-          (click)="startOver($event)"
-          [disabled]="round == 1">
-    {{ t("Start over") }}
-  </button>
+    <button id="reset"
+            (click)="startOver($event)"
+            [disabled]="round == 1">
+      {{ t("Start over") }}
+    </button>
 
-  <button id="pass"
-          (click)="pass($event)"
-          [class.highlighted]="!canPurchaseSomething">
-    {{ t("Wait for one month") }}
-  </button>
+    <button id="pass"
+            (click)="pass($event)"
+            [class.highlighted]="!canPurchaseSomething">
+      {{ t("Wait for one month") }}
+    </button>
+
+  </ng-container>
+
+  <div *ngIf="showReport"
+       id="report"
+       @fadeInOut>
+    <h1>
+      {{ t("Final report") }}
+    </h1>
+  </div>
   
 </div>
+
+<div *ngIf="showModal"
+     (click)="modalClick($event)"
+     class="modal"></div>

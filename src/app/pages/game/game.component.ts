@@ -4,6 +4,12 @@ import { Component,
 import { ActivatedRoute,
          NavigationEnd,
          Router } from '@angular/router';
+import { trigger,
+         style,
+         animate,
+         transition,
+         query,
+         animateChild } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -22,17 +28,19 @@ import { Investment,
          ONBOARDING_REACTIVATED,
          SharedService } from '../../services';
 
-const DATA_KEY_VERSION = 'v';
-const DATA_KEY_ONBOARDED = 'o';
-const DATA_KEY_PURCHASES = 'p';
-const DATA_SEPARATOR = ',';
-const ROUND_BASE = 1;
+const ANIMATION_TIMING: string = "225ms cubic-bezier(0.4, 0, 0.2, 1)";
 const AVATAR_IMAGES = {
   '-1': '/assets/images/avatar-worried.png',
    '0': '/assets/images/avatar-neutral.png',
    '1': '/assets/images/avatar-happy.png',
    '2': '/assets/images/avatar-extatic.png',
 };
+const DATA_KEY_VERSION = 'v';
+const DATA_KEY_ONBOARDED = 'o';
+const DATA_KEY_PURCHASES = 'p';
+const DATA_KEY_SHOWREPORT = 'r';
+const DATA_SEPARATOR = ',';
+const ROUND_BASE = 1;
 
 /*
  * For convenience
@@ -50,18 +58,40 @@ function clamp(num: number, min: number = null, max: number = null): number {
   styleUrls: ['./game.component.sass'],
   host: {
     "(click)": "hideInvestments()"
-  }
+  },
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+        }),
+        animate(ANIMATION_TIMING, style({
+          opacity: 1,
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1,
+        }),
+        animate(ANIMATION_TIMING, style({
+          opacity: 0,
+        })),
+      ]),
+    ]),
+  ],
 })
 export class GameComponent implements OnDestroy, OnInit {
   // Options (TODO allow setting dynamically)
   public options = {
     hideOnPurchase: true,
     autoShowOnlyChild: true,
+    roundsLeftBg: '#ffffff77', // To prevent sanitization, ie. 'rgba(255,255,255,0.5)',
     pipeFlowScale: 100
   };
   public adviceHidden: boolean = false;
   public investmentCombos: Array<InvestmentCombo>;
   public investmentRoot: InvestmentRoot;
+  public showReport: boolean = false;
   private _preloaded = new Array<any>();
   private _subscriptions = new Array<Subscription>();
 
@@ -202,6 +232,18 @@ export class GameComponent implements OnDestroy, OnInit {
       event.stopPropagation();
   }
 
+  /*
+   * Handle click on the modal overlay
+   * We only have one function for this and it is to show the report
+   */
+  public modalClick(event?: Event): void {
+    this.showReport = true;
+    this.updateUrl();
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
   public catchClick(event: Event): void {
     event.stopPropagation();
   }
@@ -213,9 +255,10 @@ export class GameComponent implements OnDestroy, OnInit {
   public updateUrl(): void {
     // We use router to save the game data between sessions
     this.router.navigate([{
-      [DATA_KEY_VERSION]:   this.shared.settings.version,
-      [DATA_KEY_ONBOARDED]: this._encodeIds(this.investmentRoot.categories.filter(c => c.isOnboarded).map(c => c.id)),
-      [DATA_KEY_PURCHASES]: this._encodeIds(this.purchasesAndPassedRounds.map(p => p.id))
+      [DATA_KEY_VERSION]:    this.shared.settings.version,
+      [DATA_KEY_ONBOARDED]:  this._encodeIds(this.investmentRoot.categories.filter(c => c.isOnboarded).map(c => c.id)),
+      [DATA_KEY_PURCHASES]:  this._encodeIds(this.purchasesAndPassedRounds.map(p => p.id)),
+      [DATA_KEY_SHOWREPORT]: this.showReport ? 1 : 0,
     }]);
   }
 
@@ -242,6 +285,10 @@ export class GameComponent implements OnDestroy, OnInit {
         this.investmentRoot.categories.filter(c => ids.includes(c.id))
                                       .forEach(c => c.completeOnboarding());
       }
+      if (this.route.snapshot.params[DATA_KEY_SHOWREPORT] && 
+          this.route.snapshot.params[DATA_KEY_SHOWREPORT] == 1) {
+        this.showReport = true;
+      }
     }
     // This resets the screen
     this.startRound();
@@ -260,6 +307,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public resetState(resetOnboarding: boolean = false): void {
     this.investmentRoot.reset(resetOnboarding);
+    this.showReport = false;
   }
 
   /**************************************
@@ -283,11 +331,32 @@ export class GameComponent implements OnDestroy, OnInit {
    * Note that round is ROUND_BASE-based (= 1)
    */
   public get round(): number {
-    return this.purchasesAndPassedRounds.length + ROUND_BASE;
+    return this.rawRound + ROUND_BASE;
+  }
+
+  /*
+   * The absolute round without ROUND_BASE
+   */
+  public get rawRound(): number {
+    return this.purchasesAndPassedRounds.length;
+  }
+
+  public get isFirstRound(): boolean {
+    return this.rawRound === 0;
   }
   
   public get roundsLeft(): number {
-    return this.shared.settings.rounds - this.round;
+    return this.shared.settings.rounds - this.rawRound;
+  }
+
+  public get roundsUsedPercentage(): string {
+    return this.rawRound / this.shared.settings.rounds * 100 + '%';
+  }
+
+  public get roundsLeftStyle(): string {
+    // This does not work due to a bug so we have to convert rgbas to #-values, see options
+    // return this.sanitizer.bypassSecurityTrustStyle(`background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${this.options.roundsLeftBg});`);
+    return `background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${this.options.roundsLeftBg});`;
   }
 
   public get returns(): number {
@@ -386,6 +455,13 @@ export class GameComponent implements OnDestroy, OnInit {
       warning:   warning == "" ? null : warning,
       imageUrl:  AVATAR_IMAGES[sentiment] ?? null
     }
+  }
+
+  /*
+   * Whether to show the modal overlay
+   */
+  public get showModal(): boolean {
+    return this.roundsLeft <= 0 && !this.showReport;
   }
 
   public t(text: string | LocalizedString): string {
