@@ -32,7 +32,8 @@ export class SharedService {
   public settings: {
     version: number,
     balance: number,
-    rounds: number
+    rounds: number,
+    bookUrl: string,
   };
   public texts: Texts;
   public investments: InvestmentRoot;
@@ -44,7 +45,8 @@ export class SharedService {
     this.settings = {
       version: settings.version,
       balance: settings.balance,
-      rounds: settings.rounds
+      rounds:  settings.rounds,
+      bookUrl: settings.bookUrl,
     };
     this.texts = texts;
     this.investments = this.processInvestmentsJson(settings.investments);

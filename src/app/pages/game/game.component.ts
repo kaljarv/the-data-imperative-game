@@ -28,7 +28,9 @@ import { Investment,
          ONBOARDING_REACTIVATED,
          SharedService } from '../../services';
 
-const ANIMATION_TIMING: string = "225ms cubic-bezier(0.4, 0, 0.2, 1)";
+const ANIMATION_DURATION: string = '225ms';
+const ANIMATION_TIMING: string = `${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
+const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
 const AVATAR_IMAGES = {
   '-1': '/assets/images/avatar-worried.png',
    '0': '/assets/images/avatar-neutral.png',
@@ -75,6 +77,29 @@ function clamp(num: number, min: number = null, max: number = null): number {
         }),
         animate(ANIMATION_TIMING, style({
           opacity: 0,
+        })),
+      ]),
+    ]),
+    trigger('switchGrowInOut', [
+      transition(':enter', [
+        style({
+          height: 0,
+          overflow: 'hidden',
+        }),
+        // We add a delay to allow for the :leave animation to finish first
+        animate(ANIMATION_TIMING_DELAYED, style({
+          height: '*',
+          overflow: 'unset',
+        })),
+      ]),
+      transition(':leave', [
+        style({
+          height: '*',
+          overflow: 'hidden',
+        }),
+        animate(ANIMATION_TIMING, style({
+          height: 0,
+          overflow: 'hidden',
         })),
       ]),
     ]),

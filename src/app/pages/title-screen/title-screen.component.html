@@ -1,8 +1,16 @@
-<h1>{{ t("The Data Imperative Game") }}</h1>
+<div id="titleAndIntro">
+  <h1>{{ t("The Data Imperative Game") }}</h1>
 
-<button routerLink="game">{{ t("Start game") }}</button>
+  <p>{{ t("Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?") }}</p>
+  
+  <button routerLink="game">{{ t("Start game") }}</button>
+</div>
 
-<div class="bookPromo">
-  <h2>{{ t("Get The Data Imperative Book Now") }}</h2>
+<div id="bookPromo"
+     (click)="bookPromoClick($event)">
+  <img src="/assets/images/book.png"
+       [alt]="t('The Data Imperative book')"
+       class="book" />
+  <h2>{{ t("Get the Book Now") }}</h2>
   <p>{{ t("BOOK_DESC") }}</p>
 </div>

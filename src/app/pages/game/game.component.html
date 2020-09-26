@@ -70,7 +70,7 @@
              class="content">
           <div *ngIf="!category.onboardingActive"
                class="children"
-               @fadeInOut>
+               @switchGrowInOut>
 
               <button *ngFor="let subcategory of category.children"
                       (click)="show(subcategory, $event)"
@@ -91,7 +91,7 @@
           </div>
           <div *ngIf="category.onboardingActive"
                class="description"
-               @fadeInOut>
+               @switchGrowInOut>
             {{ t(category.description) }}
             <button (click)="closeOnboarding(category, $event)"
                     type="button">

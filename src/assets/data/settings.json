@@ -2,6 +2,7 @@
   "version": 4,
   "balance": 100000,
   "rounds": 24,
+  "bookUrl": "https://global.oup.com/academic/product/the-data-imperative-9780198840817?cc=fi&lang=en&",
   "investments": [
       {"id": 100, "title": {"en-US": "Sources of data"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
         {"id": 104, "title": {"en-US": "Customer data"}, "children": [

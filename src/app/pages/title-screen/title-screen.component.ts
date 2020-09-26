@@ -20,4 +20,10 @@ export class TitleScreenComponent implements OnInit {
   public t(text: string): string {
     return this.shared.getText(text);
   }
+
+  public bookPromoClick(event: Event): void {
+    window.open(this.shared.settings.bookUrl, "_blank");
+    if (event)
+      event.stopPropagation();
+  }
 }

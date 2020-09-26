@@ -3,10 +3,13 @@
 
 
 // TODO:
-// wedge for bubble
+// purchase button delay
+// report
 // hovers
 // maybe highlight increasing numbers
 // calculate final sentiment
+// gather all texts to texts.json
+// http fetch jsons
 
 // VARIABLES
 
@@ -23,14 +26,20 @@ $subCat-inv-gap: $margin-L
 $btnPad-hor: $margin-L
 
 // Checkmark icon
-$url-checkmark: url(/assets/images/checkmark.svg)
-$iconWidth-checkmark: 1rem
+$url-checkmark:        url(/assets/images/checkmark.svg)
+$iconWidth-checkmark:  1rem
 $iconHeight-checkmark: $iconWidth-checkmark * 9.842 / 8.885
 
 // Money bag icon
-$url-moneyBag: url(/assets/images/money-bag.svg)
+$url-moneyBag:        url(/assets/images/money-bag.svg)
 $iconHeight-moneyBag: 3rem
-$iconWidth-moneyBag: $iconHeight-moneyBag * 14.402 / 17.439
+$iconWidth-moneyBag:  $iconHeight-moneyBag * 14.402 / 17.439
+
+// Speech bubble wedge icon
+$url-wedge:        url(/assets/images/speech-bubble-wedge.svg)
+$iconHeight-wedge: 30px
+$iconWidth-wedge:  31.7209px
+$iconShift-wedge:  1px // Horizontal shift for correct placement
   
 // The outline messes up the border changes
 button:focus
@@ -40,7 +49,6 @@ button:focus
   display: block
   height: 100vh
   width: 100vw
-  background: url(/assets/images/game-bg.jpg) center/cover, $color-secondary
 
 #grid
   display: grid
@@ -77,6 +85,7 @@ button:focus
 
 #round
   grid-area: top / col-2
+  transition: background $animationTiming-M
 
 #returns
   grid-area: top / col-3
@@ -98,6 +107,7 @@ button:focus
   
 #advice
   z-index: $zIndex-3 + 1
+  position: relative // For ::after
   grid-area: mid / col-1 / main / gap-3
   align-self: center
   justify-self: center
@@ -111,6 +121,14 @@ button:focus
   font-size: $fontSize-L
   text-align: center
   cursor: pointer
+  &::after
+    content: $url-wedge
+    display: block
+    height: $iconHeight-wedge
+    width: $iconWidth-wedge
+    position: absolute
+    bottom: calc(#{$margin-XL} + #{$borderRadius-XL})
+    right: -1 * $iconWidth-wedge + $iconShift-wedge
 
   .warning
     font-weight: $fontWeight-L

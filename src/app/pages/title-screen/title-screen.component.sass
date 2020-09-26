@@ -1,0 +1,64 @@
+@use 'sass:color'
+@import 'variables.scss'
+
+:host
+  display: grid
+  height: 100vh
+  width: 100vw
+  padding: $margin-XL
+  grid-template-rows: 1fr
+  grid-template-columns: 2fr 1fr
+
+#titleAndIntro
+  grid-area: 1 / 1
+  align-self: center
+  justify-self: start
+  padding-left: $margin-XL
+
+  h1
+    font-size: $fontSize-XXL
+    margin-bottom: $margin-L
+
+  p
+    font-size: $fontSize-L
+
+  button
+    width: auto
+    min-height: 4rem
+    min-width: 20rem
+    font-family: $fontFamily-accent
+    font-size: $fontSize-XL
+    text-transform: uppercase
+
+#bookPromo
+  display: block
+  position: fixed
+  right: 0
+  bottom: 0
+  width: 35vw
+  padding: 0 $margin-XL $margin-XL 0
+  color: $color-onPrimary
+  text-align: right
+  cursor: pointer
+
+  img.book
+    max-height: 25vw
+    width: auto
+
+  // Needed for these to be visible on top of the bg circle
+  > *
+    position: relative
+    z-index: $zIndex-5
+
+  // The background circle
+  &::before
+    content: ''
+    display: block
+    overflow: hidden
+    background-color: $color-primary
+    border-radius: 50%
+    position: absolute
+    width:  55vw
+    height: 55vw
+    top: -5vw
+    left: -5vw

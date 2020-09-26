@@ -4,7 +4,6 @@ import { Routes,
 
 import { TitleScreenComponent } from './pages/title-screen/title-screen.component';
 import { GameComponent } from './pages/game';
-import { ReportComponent } from './pages/report/report.component';
 
 const routes: Routes = [
   { path: '', 
@@ -13,8 +12,6 @@ const routes: Routes = [
     component: TitleScreenComponent },
   { path: 'game', 
     component: GameComponent },
-  { path: 'report', 
-    component: ReportComponent },
 ];
 
 @NgModule({
