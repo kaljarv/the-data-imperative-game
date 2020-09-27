@@ -1,34 +1,36 @@
-import { Inject,
+import { EventEmitter,
+         Inject,
          Injectable,
          LOCALE_ID } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject,
+         forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { LocalizedString,
+         Settings,
          Texts } from './shared.types';
 import { Investment, 
          InvestmentCategory, 
          InvestmentCombo, 
          InvestmentRoot } from './investment.types';
 
-import settings from '../../assets/data/settings.json';
-import texts from '../../assets/data/texts.json';
-
-
-/*
- * TODO
-
-Convert settings to interfaces
-Process settings
-Convert types in game.comp
-Move to methods
-
- */
-
-const DEFAULT_LOCALE = 'en-US';
+export const ANIMATION_DURATION_MS: number = 225;
+export const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
+export const ANIMATION_TIMING: string = `${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
+export const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
+export const DEFAULT_LOCALE = 'en-US';
+const SETTINGS_URL = 'assets/data/settings.json';
+const TEXTS_URL = 'assets/data/texts.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+  public investments: InvestmentRoot;
+  public investmentCombos: Array<InvestmentCombo>;
+  public ready = new BehaviorSubject<boolean>(false);
+  public error = new EventEmitter<string>();
   public settings: {
     version: number,
     balance: number,
@@ -36,19 +38,41 @@ export class SharedService {
     bookUrl: string,
   };
   public texts: Texts;
-  public investments: InvestmentRoot;
-  public investmentCombos: Array<InvestmentCombo>;
 
   constructor(
+    private http: HttpClient,
     @Inject(LOCALE_ID) public locale: string
   ) {
+    this.loadData();
+  }
+
+  public loadData(): void {
+    forkJoin([
+      this.http.get<Settings>(SETTINGS_URL).pipe(
+        map(d => {
+          this.processSettings(d);
+          return true;
+        })
+      ), 
+      this.http.get<Texts>(TEXTS_URL).pipe(
+        map(d => {
+          this.texts = d;
+          return true;
+        })
+      ), 
+    ]).subscribe(_ => this.ready.next(true));
+  }
+
+  /*
+   * Process the whole settings json object
+   */
+  public processSettings(settings: Settings): void {
     this.settings = {
       version: settings.version,
       balance: settings.balance,
       rounds:  settings.rounds,
       bookUrl: settings.bookUrl,
     };
-    this.texts = texts;
     this.investments = this.processInvestmentsJson(settings.investments);
     this.investmentCombos = this.processInvestmentCombosJson(settings.investmentCombos);
   }
@@ -109,4 +133,5 @@ export class SharedService {
       return text[this.locale] ?? text[DEFAULT_LOCALE];
     }
   }
+
 }

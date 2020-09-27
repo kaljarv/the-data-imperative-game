@@ -11,7 +11,10 @@ import { trigger,
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Investment,
+import { ANIMATION_DURATION_MS,
+         ANIMATION_TIMING,
+         ANIMATION_TIMING_DELAYED,
+         Investment,
          InvestmentCategory,
          InvestmentCombo,
          InvestmentId,
@@ -21,10 +24,7 @@ import { Investment,
          NULL_INVESTMENT_ID,
          SharedService } from '../../services';
 
-const ANIMATION_DURATION_MS: number = 225;         
-const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
-const ANIMATION_TIMING: string = `${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
-const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
+
 const AVATAR_IMAGES = {
   '-1': '/assets/images/avatar-worried.png',
    '0': '/assets/images/avatar-neutral.png',

@@ -1,0 +1,21 @@
+@use 'sass:color'
+@import 'variables.scss'
+  
+
+.loading
+  position: absolute
+  border-radius: 0.5rem
+  top: calc(50vh - 0.5rem)
+  left: 25vw
+  right: 25vw
+  bottom: calc(50vh - 0.5rem)
+  background: linear-gradient(270deg, #{color.change($color-accent, $alpha:0.25)}, #{$color-accent}, #{color.change($color-accent, $alpha:0.25)})
+  background-size: 200% 100%
+  background-repeat: no-repeat
+  animation: DataFlow 2s linear reverse infinite
+
+@keyframes DataFlow
+  0%
+    background-position: 200% 0%
+  100%
+    background-position: 0% 0%
