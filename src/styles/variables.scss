@@ -17,6 +17,8 @@ $color-secondary:   color.mix(white, $color-primary, 60%);
 // $color-background:  map-get($background, background);
 
 $alpha-overlay: 0.8;
+$alpha-buttonBg: 0.3;
+$opacity-disabled: 0.5;
 
 $fontSize-XS: 0.72rem;
 $fontSize-S:  0.8rem;
@@ -55,7 +57,10 @@ $maxWidth-S: 25rem; // For Likert forms and displays
 $maxWidth-M: 38rem; // For body text
 $maxWidth-L: 40rem; // For overlays
 
-$animationTiming-M: 225ms cubic-bezier(0.4, 0, 0.2, 1);
+$animationEasing: cubic-bezier(0.4, 0, 0.2, 1);
+$animationDuration-M: 225ms;
+$animationTiming-M: $animationDuration-M $animationEasing;
+$animationTimingWithDealy-M: $animationDuration-M $animationDuration-M $animationEasing;
 
 $zIndex-10: 1000;
 $zIndex-9: 900; // Popups
@@ -67,3 +72,17 @@ $zIndex-4: 400; // Top bar
 $zIndex-3: 300; // Avatar, advice
 $zIndex-2: 0;   // Content
 $zIndex-0: -1000;
+
+
+/* Mixins */
+
+@mixin buttonOnWhite {
+  &:hover {
+    background-color: color.change($color-primary, $alpha: 0.5 * $alpha-buttonBg);
+  } 
+}
+
+@mixin buttonOnColor {
+  color: $color-primary;
+  border-color: $color-primary;
+}

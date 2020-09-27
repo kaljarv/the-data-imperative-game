@@ -3,10 +3,7 @@
 
 
 // TODO:
-// purchase button delay
 // report
-// hovers
-// maybe highlight increasing numbers
 // calculate final sentiment
 // gather all texts to texts.json
 // http fetch jsons
@@ -85,7 +82,6 @@ button:focus
 
 #round
   grid-area: top / col-2
-  transition: background $animationTiming-M
 
 #returns
   grid-area: top / col-3
@@ -127,7 +123,7 @@ button:focus
     height: $iconHeight-wedge
     width: $iconWidth-wedge
     position: absolute
-    bottom: calc(#{$margin-XL} + #{$borderRadius-XL})
+    bottom: calc(#{$margin-M} + #{$borderRadius-XL})
     right: -1 * $iconWidth-wedge + $iconShift-wedge
 
   .warning
@@ -178,9 +174,14 @@ button:focus
     border-radius: 50%
     cursor: pointer
 
+  // This messes up the button.active's extended border
   // .content
+  //  overflow: hidden // Needed for animations
+
   .children
     button
+      @include buttonOnWhite
+      transform: translateX(0) // Needed for transitions as a base value
       .title
         display: block
       .investmentMarkers
@@ -318,7 +319,8 @@ button:focus
   button    
     border-color: $color-onPrimary
     position: relative // Needed for ::before
-    transition: border $animationTiming-M
+    // The delay is needed as :enter for investments is also delayed
+    transition: border $animationTimingWithDealy-M
     &.purchased
       &::before
         content: $url-checkmark
@@ -425,6 +427,9 @@ button:focus
       &:disabled
         opacity: 0.5
         cursor: not-allowed
+      &:active:enabled
+        background-color: $color-accent
+        color: $color-onPrimary
 
     .warning
       font-size: $fontSize-S
@@ -458,6 +463,33 @@ button:focus
 
 #reset
   grid-area: bottom / col-1
+  &:active:enabled
+    background-color: $color-accent
+    border-color: $color-accent
+    color: $color-onPrimary
+
+#resetConfirmation
+  grid-area: bottom / col-1 / bottom / gap-3
+  // min-height and margin-top should match those of #pass, ie. button
+  min-height: 4rem
+  margin-top: $margin-L
+  padding: $margin-M
+  background-color: $color-onPrimary
+  border-radius: $borderRadius-M
+  box-shadow: $boxShadow-M
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+
+  .info
+    flex-basis: 44%
+    font-weight: $fontWeight-L
+
+  button
+    flex-basis: 22%
+    min-height: unset
+    margin: 0 0 0 $margin-S
 
 #pass
   grid-area: bottom / col-4
@@ -465,6 +497,10 @@ button:focus
     background-color: $color-onPrimary
     // border-color: $color-accent
     // color: $color-accent
+  &:active:enabled
+    background-color: $color-accent
+    border-color: $color-accent
+    color: $color-onPrimary
 
 #report
   grid-area: mid / col-1 / bottom-edge / right-edge

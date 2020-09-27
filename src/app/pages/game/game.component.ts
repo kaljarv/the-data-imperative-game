@@ -7,12 +7,9 @@ import { ActivatedRoute,
 import { trigger,
          style,
          animate,
-         transition,
-         query,
-         animateChild } from '@angular/animations';
+         transition } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
 
 import { Investment,
          InvestmentCategory,
@@ -22,13 +19,10 @@ import { Investment,
          InvestmentRoot,
          LocalizedString,
          NULL_INVESTMENT_ID,
-         ONBOARDING_NEEDED,
-         ONBOARDING_ACTIVE,
-         ONBOARDING_COMPLETE,
-         ONBOARDING_REACTIVATED,
          SharedService } from '../../services';
 
-const ANIMATION_DURATION: string = '225ms';
+const ANIMATION_DURATION_MS: number = 225;         
+const ANIMATION_DURATION: string = ANIMATION_DURATION_MS + 'ms';
 const ANIMATION_TIMING: string = `${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
 const ANIMATION_TIMING_DELAYED: string = `${ANIMATION_DURATION} ${ANIMATION_DURATION} cubic-bezier(0.4, 0, 0.2, 1)`;
 const AVATAR_IMAGES = {
@@ -43,6 +37,15 @@ const DATA_KEY_PURCHASES = 'p';
 const DATA_KEY_SHOWREPORT = 'r';
 const DATA_SEPARATOR = ',';
 const ROUND_BASE = 1;
+const ROUNDS_LEFT_BG = '#ffffff4d'; // To prevent sanitization, ie. 'rgba(255,255,255,0.3)',
+const PIPE_FLOW_SCALE = 100; // The pipe flow value's multiplier (from [0,1])
+
+enum ShowableTopic {
+  Investment,
+  Advice,
+  ResetConfirmation,
+  Onboarding
+}
 
 /*
  * For convenience
@@ -59,7 +62,7 @@ function clamp(num: number, min: number = null, max: number = null): number {
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.sass'],
   host: {
-    "(click)": "hideInvestments()"
+    "(click)": "hideOthers()"
   },
   animations: [
     trigger('fadeInOut', [
@@ -75,7 +78,9 @@ function clamp(num: number, min: number = null, max: number = null): number {
         style({
           opacity: 1,
         }),
-        animate(ANIMATION_TIMING, style({
+        // We add a delay to allow for the :enter animation to finish first
+        // when switching subcategories
+        animate(ANIMATION_TIMING_DELAYED, style({
           opacity: 0,
         })),
       ]),
@@ -110,13 +115,13 @@ export class GameComponent implements OnDestroy, OnInit {
   public options = {
     hideOnPurchase: true,
     autoShowOnlyChild: true,
-    roundsLeftBg: '#ffffff77', // To prevent sanitization, ie. 'rgba(255,255,255,0.5)',
-    pipeFlowScale: 100
+    purchaseDelay: ANIMATION_DURATION_MS, // Delay between pushing the purchase button and the action taking place
   };
   public adviceHidden: boolean = false;
   public investmentCombos: Array<InvestmentCombo>;
   public investmentRoot: InvestmentRoot;
   public showReport: boolean = false;
+  public showStartOverConfirmation: boolean;
   private _preloaded = new Array<any>();
   private _subscriptions = new Array<Subscription>();
 
@@ -157,8 +162,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public categoryClick(category: InvestmentCategory, event: Event = null): void {
     if (category.needsOnboarding) {
-      // Hide advice
-      this.setAdviceHidden(true);
+      this.hideOthers(ShowableTopic.Onboarding);
       this.startOnboarding(category, event);
     }
     // Disable background click if this investment is active,
@@ -169,9 +173,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public startOnboarding(category: InvestmentCategory, event: Event = null): void {
     if (category.onboardingAvailable) {
-      // Hide advice
-      this.setAdviceHidden(true);
-      this.hideInvestments();
+      this.hideOthers(ShowableTopic.Onboarding);
       category.activateOnboarding();
     }
     // To disable background click
@@ -180,9 +182,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public closeOnboarding(category: InvestmentCategory, event?: Event): void {
-    // Hide advice
-    this.setAdviceHidden(true);
-    this.hideInvestments();
+    this.hideOthers();
     category.completeOnboarding();
     // This is disabled as it makes boxes close and dialogs disappear in unwanted ways.
     // The drawback is that the onboarding status is only saved after a round is completed.
@@ -198,16 +198,23 @@ export class GameComponent implements OnDestroy, OnInit {
   public show(node: InvestmentNode, event?: Event): void {
     // If we are showing and investment with only one child, propagate showing to that
     if (this.options.autoShowOnlyChild && node instanceof InvestmentCategory && node.children.length === 1) {
-      this.show(node.children[0], event);
+      return this.show(node.children[0], event);
     } else {
       // Set this one as active
       node.active = true;
     }
-    // Hide advice
-    this.setAdviceHidden(true);
+    this.hideOthers(ShowableTopic.Investment);
     // To disable background click
     if (event)
       event.stopPropagation();
+  }
+
+  /*
+   * Delayed purchase action so that we have time for the click animation to show
+   * See .investment button:active in the sass file
+   */
+  public purchaseClick(investment?: Investment, event?: Event): void {
+    setTimeout(() => this.purchase(investment, event), this.options.purchaseDelay);
   }
 
   /*
@@ -215,7 +222,7 @@ export class GameComponent implements OnDestroy, OnInit {
    */
   public purchase(investment?: Investment, event?: Event): void {
     if (this.options.hideOnPurchase)
-      this.hideInvestments();
+      this.hideOthers();
     if (investment) {
       investment.purchase(this.round);
     } else {
@@ -228,13 +235,39 @@ export class GameComponent implements OnDestroy, OnInit {
       event.stopPropagation();
   }
 
+  /*
+   * Delayed pass action so that we have time for the click animation to show
+   */
+  public passClick(event?: Event): void {
+    this.purchaseClick(null, event);
+  }
+
   public pass(event?: Event): void {
     this.purchase(null, event);
   }
 
+  public resetClick(event?: Event): void {
+    this.hideOthers(ShowableTopic.ResetConfirmation);
+    this.showStartOverConfirmation = true;
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
+  public cancelReset(event?: Event): void {
+    this.showStartOverConfirmation = false;
+    // To disable background click
+    if (event)
+      event.stopPropagation();
+  }
+
+  public startOverClick(event?: Event): void {
+    this.hideOthers(ShowableTopic.ResetConfirmation);
+    setTimeout(() => this.startOver(event), this.options.purchaseDelay);
+  }
+
   public startOver(event?: Event): void {
-    // TODO Add confirmation
-    this.hideInvestments();
+    this.hideOthers();
     this.resetState();
     this.updateUrl();
     this.startRound();
@@ -244,14 +277,13 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public toggleAdvice(event?: Event): void {
-    this.adviceHidden = !this.adviceHidden;
-    // To disable background click
-    if (event)
-      event.stopPropagation();
+    this.setAdviceHidden(null, event);
   }
 
   public setAdviceHidden(hide: boolean = true, event?: Event): void {
-    this.adviceHidden = hide;
+    this.hideOthers(ShowableTopic.Advice);
+    // hide = null means toggle
+    this.adviceHidden = hide === null ? !this.adviceHidden : hide;
     // To disable background click
     if (event)
       event.stopPropagation();
@@ -328,6 +360,7 @@ export class GameComponent implements OnDestroy, OnInit {
 
   public startRound(): void {
     this.adviceHidden = false;
+    this.showStartOverConfirmation = false;
   }
 
   public resetState(resetOnboarding: boolean = false): void {
@@ -381,7 +414,7 @@ export class GameComponent implements OnDestroy, OnInit {
   public get roundsLeftStyle(): string {
     // This does not work due to a bug so we have to convert rgbas to #-values, see options
     // return this.sanitizer.bypassSecurityTrustStyle(`background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${this.options.roundsLeftBg});`);
-    return `background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${this.options.roundsLeftBg});`;
+    return `background: linear-gradient(90deg, transparent, ${this.roundsUsedPercentage}, transparent, ${this.roundsUsedPercentage}, ${ROUNDS_LEFT_BG});`;
   }
 
   public get returns(): number {
@@ -507,7 +540,7 @@ export class GameComponent implements OnDestroy, OnInit {
     if (index > this.investmentRoot.children.length - 1)
       throw new Error(`Index ${index} for getPipeFlow out of range.`);
     // TODO Implement proper behaviour
-    let baseValue: number = index === 0 ? this.options.pipeFlowScale : this.getPipeFlow(index - 1);
+    let baseValue: number = index === 0 ? PIPE_FLOW_SCALE : this.getPipeFlow(index - 1);
     let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
     return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
   }
@@ -518,7 +551,7 @@ export class GameComponent implements OnDestroy, OnInit {
    */
   public getReversePipeFlow(index: number): number {
     return this.getPipeFlow(index) == 0 ? 0 : 
-           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * this.options.pipeFlowScale;
+           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * PIPE_FLOW_SCALE;
   }
 
   /*
@@ -530,10 +563,17 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /*
-   * Call this with all clicks except investment categories
+   * Call this with all clicks so we only show one thing at a time
    */
-  public hideInvestments(): void {
-    this.hide();
+  public hideOthers(show: ShowableTopic = null): void {
+    if (show !== ShowableTopic.Investment)
+      this.hide();
+    if (show !== ShowableTopic.Advice)
+      this.adviceHidden = true;
+    if (show !== ShowableTopic.ResetConfirmation)
+      this.showStartOverConfirmation = false;
+    // if (show !== ShowableTopic.Onboarding)
+    // nothing special with this one
     // this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
     //                             .forEach(c => (c as InvestmentCategory).completeOnboarding());
   }

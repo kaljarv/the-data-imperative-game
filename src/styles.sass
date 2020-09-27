@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'sass:color'
 
 @import '~normalize.css'
 @import 'variables.scss'
@@ -45,6 +45,7 @@ h5
 
 /* INTERACTIVE ELEMENTS */
 
+// See also mixins in variables scss for different button styles
 button
   display: block
   color: inherit
@@ -57,4 +58,11 @@ button
   border-radius: $borderRadius-M
   text-align: center
   width: 100%
+  transition: all $animationTiming-M
   cursor: pointer
+  &:disabled
+    cursor: not-allowed
+    opacity: $opacity-disabled
+  &:hover:enabled
+    background-color: color.change($color-onPrimary, $alpha: $alpha-buttonBg)
+  

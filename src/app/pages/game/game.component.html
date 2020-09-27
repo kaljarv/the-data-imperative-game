@@ -151,7 +151,8 @@
                     {{ t(investment.description) }}
                   </p>
                   <button *ngIf="!investment.purchased"
-                          (click)="purchase(investment, $event)"
+                          #purchaseButton
+                          (click)="purchaseClick(investment, $event)"
                           [disabled]="!canPurchase(investment)"
                           type="button">
                       {{ t("Invest") }}
@@ -178,14 +179,32 @@
 
     </ng-container><!-- /let category of investmentCategories -->
 
-    <button id="reset"
-            (click)="startOver($event)"
-            [disabled]="round == 1">
+    <button *ngIf="!showStartOverConfirmation"
+            id="reset"
+            (click)="resetClick($event)"
+            [disabled]="round == 1"
+            @fadeInOut>
       {{ t("Start over") }}
     </button>
 
+    <div *ngIf="showStartOverConfirmation"
+         id="resetConfirmation"
+         @fadeInOut>
+      <span class="info">
+        {{ t("Are you sure you want to start over?") }}
+      </span>
+      <button (click)="cancelReset($event)"
+              class="cancel">
+        {{ t("Cancel") }}
+      </button>
+      <button (click)="startOverClick($event)"
+              class="ok">
+        {{ t("Yes") }}
+      </button>
+    </div>
+
     <button id="pass"
-            (click)="pass($event)"
+            (click)="passClick($event)"
             [class.highlighted]="!canPurchaseSomething">
       {{ t("Wait for one month") }}
     </button>
