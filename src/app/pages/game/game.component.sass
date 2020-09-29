@@ -224,9 +224,6 @@ button:focus
           a
             border-color: $color-onPrimary
 
-  .description
-    button
-
 .category.onboarded
 
 .category--0
@@ -244,22 +241,22 @@ button:focus
 // Activated subcategory buttons stretch towards the subcat menu
 .category--0,
 .category--1
-  .children button.active
-    // Add 1px to correct subpixel disparity
-    border-right-width: calc(#{$margin-L} + 1px)
-    border-top-right-radius: 0rem
-    border-bottom-right-radius: 0rem
+  .children 
+    button.active
+      // Add 1px to correct subpixel disparity
+      border-right-width: calc(#{$margin-L} + 1px)
+      border-top-right-radius: 0rem
+      border-bottom-right-radius: 0rem
 
 .category--2,
 .category--3
-  .children button.active
-    border-left-width: calc(#{$margin-L} + 1px)
-    border-top-left-radius: 0rem
-    border-bottom-left-radius: 0rem
-    // Move towards the left by border width
-    transform: translateX(calc(-#{$margin-L} - 1px))
-
-
+  .children 
+    button.active
+      border-left-width: calc(#{$margin-L} + 1px)
+      border-top-left-radius: 0rem
+      border-bottom-left-radius: 0rem
+      // Move towards the left by border width
+      transform: translateX(calc(-#{$margin-L} - 1px))
 
 .dataPipe
   z-index: $zIndex-5

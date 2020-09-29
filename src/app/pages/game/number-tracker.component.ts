@@ -46,7 +46,7 @@ export class NumberTrackerComponent implements OnDestroy {
   /*
    * Increment size
    */
-  @Input() stepSize = 101;
+  @Input() stepSize = 501;
   
   /*
    * Whether to use currency formatting. See template
