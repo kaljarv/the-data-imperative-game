@@ -505,6 +505,26 @@ button:focus
   box-shadow: $boxShadow-M
   margin-top: $margin-XL
   padding: $margin-XL
+  display: grid
+  grid-template-rows: min-content 1fr [right-edge]
+  grid-template-columns: 3fr 1fr [bottom-edge]
+  
+  h1
+    grid-area: 1 / 1
+    margin: 0 $margin-XL 0 0
+    align-self: center
+  
+  button
+    grid-area: 1 / 2
+    justify-self: end
+    margin: 0 !important
+    min-height: 3rem
+    align-self: center
+
+  app-result-chart
+    grid-area: 2 / 1 / bottom-edge / right-edge
+    align-self: stretch
+    margin-top: $margin-L
 
 .modal
   z-index: $zIndex-10

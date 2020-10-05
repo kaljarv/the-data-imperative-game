@@ -9,6 +9,7 @@ $color-primary:     rgb(71, 82, 146);
 $color-onPrimary:   white;
 // $color-primaryBg:   color.mix(white, $color-primary, 60%);
 $color-accent:      rgb(220, 202, 88);
+$color-accentDarker: color.change($color-accent, $lightness: 40%);
 // $color-accentBg:    color.mix(white, $color-accent, 60%);
 // $color-warn:        mat-color($warn);
 // $color-warnBg:      mat-color($warn, 100); // color.mix(white, $color-warn, 80%)

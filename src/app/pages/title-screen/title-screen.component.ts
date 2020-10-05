@@ -1,7 +1,7 @@
 import { Component,
          OnInit } from '@angular/core';
 
-import { SharedService} from '../../services';
+import { SharedService } from '../../shared';
 
 @Component({
   selector: 'app-title-screen',

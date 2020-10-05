@@ -1,0 +1,32 @@
+@use 'sass:color'
+@import 'variables.scss'
+
+.resultChart
+  display: block
+  width: 100%
+  height: 100%
+  min-height: 30rem
+  min-width: 30rem
+  
+  *
+    font-family: inherit // We need this for the svg elements to not default to sans-serif
+
+  .tooltip
+    path
+      stroke: $color-primary
+    text
+      font-family: inherit
+      fill: $color-primary
+
+  .returns
+    path, 
+    line
+      stroke: $color-primary
+
+  .balance
+    rect
+      fill: $color-accent
+    line
+      stroke: $color-accentDarker
+    text
+      fill: $color-accentDarker

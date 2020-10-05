@@ -21,8 +21,11 @@ import { ANIMATION_DURATION_MS,
          InvestmentNode,
          InvestmentRoot,
          LocalizedString,
+         NullInvestment,
          NULL_INVESTMENT_ID,
-         SharedService } from '../../services';
+         SharedService } from '../../shared';
+
+import { ResultChartData } from './result-chart.component';
 
 
 const AVATAR_IMAGES = {
@@ -126,9 +129,9 @@ export class GameComponent implements OnDestroy, OnInit {
   private _subscriptions = new Array<Subscription>();
 
   constructor(
-    private route:  ActivatedRoute,
-    private router: Router,
-    private shared: SharedService
+    private route:     ActivatedRoute,
+    private router:    Router,
+    private shared:    SharedService
   ) {
     this.investmentRoot = this.shared.investments;
     this.investmentCombos = this.shared.investmentCombos;
@@ -267,10 +270,12 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public startOver(event?: Event): void {
-    this.hideOthers();
-    this.resetState();
-    this.updateUrl();
-    this.startRound();
+    // We are just navigating to the title screen
+    this.router.navigate(['/']);
+    // this.hideOthers();
+    // this.resetState();
+    // this.updateUrl();
+    // this.startRound();
     // To disable background click
     if (event)
       event.stopPropagation();
@@ -287,6 +292,30 @@ export class GameComponent implements OnDestroy, OnInit {
     // To disable background click
     if (event)
       event.stopPropagation();
+  }
+
+  /*
+   * Hide a subcategory or an investment and all it's descendants
+   * If not argument given, all are hidden
+   */
+  public hide(node: InvestmentNode = this.investmentRoot): void {
+    node.active = false;
+  }
+
+  /*
+   * Call this with all clicks so we only show one thing at a time
+   */
+  public hideOthers(show: ShowableTopic = null): void {
+    if (show !== ShowableTopic.Investment)
+      this.hide();
+    if (show !== ShowableTopic.Advice)
+      this.adviceHidden = true;
+    if (show !== ShowableTopic.ResetConfirmation)
+      this.showStartOverConfirmation = false;
+    // if (show !== ShowableTopic.Onboarding)
+    // nothing special with this one
+    // this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
+    //                             .forEach(c => (c as InvestmentCategory).completeOnboarding());
   }
 
   /*
@@ -369,7 +398,7 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   /**************************************
-   * OTHER METHODS                      *
+   * GETTERS                            *
    **************************************/
 
   public get investmentCategories(): Array<InvestmentCategory> {
@@ -377,12 +406,12 @@ export class GameComponent implements OnDestroy, OnInit {
   }
 
   public get balance(): number {
-    return this.shared.settings.balance - this.spentBalance + this.accumulatedReturns;
+    // After the final round, we add the monthly returns once to match the result chart's view
+    return this.getBalance(this.purchasesAndPassedRounds) + (this.roundsLeft === 0 ? this.returns : 0);
   }
 
   public get spentBalance(): number {
-    // We include passed rounds here, as we might defined a cost for passing a round
-    return sum(this.purchasesAndPassedRounds.map(p => p.price));
+    return this.getSpentBalance(this.purchasesAndPassedRounds);
   }
 
   /*
@@ -432,20 +461,6 @@ export class GameComponent implements OnDestroy, OnInit {
     return this.investmentRoot.purchasesAndPassedRounds;
   }
 
-  /*
-   * Calculate returns iteratively with each round's accumulated purchases
-   */
-  public get accumulatedReturns(): number {
-    let total = 0;
-    const purchases = this.purchasesAndPassedRounds;
-    if (purchases.length > 0) {
-      for (let i = 0; i < purchases.length; i++) {
-        total += this.getTotalReturns(purchases.slice(0, i));
-      }
-    }
-    return total;
-  }
-
   public get canPurchaseSomething(): boolean {
     return this.investmentRoot.investments.filter(i => !i.purchased && this.canPurchase(i)).length > 0;
   }
@@ -481,11 +496,11 @@ export class GameComponent implements OnDestroy, OnInit {
       } 
 
       // 3. Combos
-      const newCmb = this.getNewlyCompletedCombos();
+      const newCmb =  this.getNewlyCompletedCombos();
       const nearCmb = this.getNearlyCompletedCombos();
       if (newCmb.length > 0) {
         sentiment += 1;
-        advice += this.t("Wow! That investment really seems to pay off!") + " ";
+        advice += this.t(newCmb[0].description ?? "Wow! That investment really seems to pay off!") + " ";
       } else if (nearCmb.length > 0) {
         advice += this.t("It seems we are not utilising these investments as well as we could: ") +
                   nearCmb[0].investments.map(id => this.getInvestment(id))
@@ -501,12 +516,6 @@ export class GameComponent implements OnDestroy, OnInit {
       }
     }
   
-    // TODO Remove this
-    if (advice == "") {
-      sentiment = (this.round % 4) - 1;
-      if (this.round % 3 === 0)
-        advice += "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolorem!";
-    }
 	  return {
       sentiment: clamp(sentiment, -1, 2),
       advice:    advice == "" ? null : advice,
@@ -522,8 +531,35 @@ export class GameComponent implements OnDestroy, OnInit {
     return this.roundsLeft <= 0 && !this.showReport;
   }
 
+  /**************************************
+   * TEXT LOCALISATION                  *
+   **************************************/
+
+  /*
+   * Localize a string or LocalizedString object
+   * See SharedService
+   */
   public t(text: string | LocalizedString): string {
     return this.shared.getText(text);
+  }
+
+  /**************************************
+   * INVESTMENTS, COMBOS AND CATEGORIES *
+   **************************************/
+
+  /*
+   * Get total balance based on made purchases
+   */
+  public getBalance(purchases: Array<Investment>): number {
+    return this.shared.settings.balance - this.getSpentBalance(purchases) + this.getAccumulatedReturns(purchases);
+  }
+
+  /*
+   * Get balance used on investments based on made purchases
+   */
+  public getSpentBalance(purchases: Array<Investment>): number {
+    // We include passed rounds here, as we might defined a cost for passing a round
+    return sum(purchases.map(p => p.price));
   }
 
   /*
@@ -531,51 +567,6 @@ export class GameComponent implements OnDestroy, OnInit {
    */
   public hasActiveInvestments(investment: InvestmentCategory): boolean {
     return investment.investments.filter(i => i.active).length > 0;
-  }
-
-  /*
-   * Get the flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) for a dataPipe
-   */
-  public getPipeFlow(index: number): number {
-    if (index > this.investmentRoot.children.length - 1)
-      throw new Error(`Index ${index} for getPipeFlow out of range.`);
-    // TODO Implement proper behaviour
-    let baseValue: number = index === 0 ? PIPE_FLOW_SCALE : this.getPipeFlow(index - 1);
-    let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
-    return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
-  }
-
-  /*
-   * Get the reverse flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) 
-   * of the total flow for a dataPipe i.e. the proportion of data that is not utilized by the next block
-   */
-  public getReversePipeFlow(index: number): number {
-    return this.getPipeFlow(index) == 0 ? 0 : 
-           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * PIPE_FLOW_SCALE;
-  }
-
-  /*
-   * Hide a subcategory or an investment and all it's descendants
-   * If not argument given, all are hidden
-   */
-  public hide(node: InvestmentNode = this.investmentRoot): void {
-    node.active = false;
-  }
-
-  /*
-   * Call this with all clicks so we only show one thing at a time
-   */
-  public hideOthers(show: ShowableTopic = null): void {
-    if (show !== ShowableTopic.Investment)
-      this.hide();
-    if (show !== ShowableTopic.Advice)
-      this.adviceHidden = true;
-    if (show !== ShowableTopic.ResetConfirmation)
-      this.showStartOverConfirmation = false;
-    // if (show !== ShowableTopic.Onboarding)
-    // nothing special with this one
-    // this.investmentRoot.children.filter(c =>  (c as InvestmentCategory).onboardingActive)
-    //                             .forEach(c => (c as InvestmentCategory).completeOnboarding());
   }
 
   public canPurchase(investment: Investment): boolean {
@@ -589,6 +580,24 @@ export class GameComponent implements OnDestroy, OnInit {
     return res[0];
   }
 
+  /*
+   * Get total accumulated returns based on purchases
+   * Calculated by iteratively summing each rounds returns
+   */
+  public getAccumulatedReturns(purchases: Array<Investment>): number {
+    // NB. This code is duplicated in resultChartData() for efficiency
+    let total = 0;
+    if (purchases.length > 0) {
+      for (let i = 0; i < purchases.length; i++) {
+        total += this.getTotalReturns(purchases.slice(0, i));
+      }
+    }
+    return total;
+  }
+
+  /*
+   * Calculate returns generated by the purchases
+   */
   public getTotalReturns(purchases: Array<Investment>): number {
     return this.getInvestmentReturns(purchases) + this.getComboReturns(purchases);
   }
@@ -622,6 +631,58 @@ export class GameComponent implements OnDestroy, OnInit {
   public getNearlyCompletedCombos(): Array<InvestmentCombo> {
     return this.investmentCombos.filter(c => c.countMissing(this.purchases) === 1)
                                 .sort((a, b) => b.returns - a.returns);
+  }
+
+  /**************************************
+   * PIPE FLOW                          *
+   **************************************/
+
+  /*
+   * Get the flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) for a dataPipe
+   */
+  public getPipeFlow(index: number): number {
+    if (index > this.investmentRoot.children.length - 1)
+      throw new Error(`Index ${index} for getPipeFlow out of range.`);
+    // TODO Implement proper behaviour
+    let baseValue: number = index === 0 ? PIPE_FLOW_SCALE : this.getPipeFlow(index - 1);
+    let inv = (this.investmentRoot.children[index] as InvestmentCategory).investments;
+    return baseValue * inv.filter(i => i.purchased).length / (inv.length ?? 1);
+  }
+
+  /*
+   * Get the reverse flow intensity as a percentage 0--100 (for this.options.pipeFlowScale = 100) 
+   * of the total flow for a dataPipe i.e. the proportion of data that is not utilized by the next block
+   */
+  public getReversePipeFlow(index: number): number {
+    return this.getPipeFlow(index) == 0 ? 0 : 
+           (1 - this.getPipeFlow(index + 1) / this.getPipeFlow(index)) * PIPE_FLOW_SCALE;
+  }
+
+  /**************************************
+   * REPORT                             *
+   **************************************/
+
+  /*
+   * Get data for the resultChart component to use
+   */
+  public get resultChartData(): ResultChartData {
+    const data = new Array<any>();
+    const purchases = this.purchasesAndPassedRounds;
+
+    // NB. This code is partly copied from getAccumulatedReturns
+    let balance = this.shared.settings.balance;
+    for (let i = 0; i <= purchases.length; i++) {
+      const returns = this.getTotalReturns(purchases.slice(0, i));
+      balance += returns;
+      balance -= i === 0 ? 0 : purchases[i - 1].price;
+      data.push({
+        round:      i + ROUND_BASE,
+        balance:    balance,
+        returns:    returns,
+        investment: this.t(i === 0 ? 'Start' : (purchases[i - 1] instanceof NullInvestment ? 'Pass' : purchases[i - 1].title))
+      });
+    }
+    return data;
   }
 
 }

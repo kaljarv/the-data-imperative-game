@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { GameComponent } from './game.component';
 import { NumberTrackerComponent } from './number-tracker.component';
+import { ResultChartComponent } from './result-chart.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { NumberTrackerComponent } from './number-tracker.component';
   ],
   declarations: [
     GameComponent,
-    NumberTrackerComponent
+    NumberTrackerComponent,
+    ResultChartComponent
   ],
 })
 export class GameModule {}

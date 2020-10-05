@@ -4,71 +4,924 @@
   "rounds": 24,
   "bookUrl": "https://global.oup.com/academic/product/the-data-imperative-9780198840817?cc=fi&lang=en&",
   "investments": [
-      {"id": 100, "title": {"en-US": "Sources of data"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
-        {"id": 104, "title": {"en-US": "Customer data"}, "children": [
-          {"id": 0, "title": {"en-US": "Customer register"}, "longTitle": {"en-US": "Detailed register of customer information"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 1, "title": {"en-US": "Security cam data"}, "longTitle": {"en-US": "Security cam data"}, "price": 10000 }, 
-          {"id": 2, "title": {"en-US": "Market research"}, "longTitle": {"en-US": "Market research"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 105, "title": {"en-US": "Product data"}, "children": [
-          {"id": 3, "title": {"en-US": "Product details"}, "longTitle": {"en-US": "Product details"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 4, "title": {"en-US": "Product sales data"}, "longTitle": {"en-US": "Product sales data"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 106, "title": {"en-US": "Other data"}, "children": [
-          {"id": 5, "title": {"en-US": "Weather forecasts"}, "longTitle": {"en-US": "Weather forecasts"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 6, "title": {"en-US": "Employee data"}, "longTitle": {"en-US": "Employee data"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 7, "title": {"en-US": "Website logs"}, "longTitle": {"en-US": "Website logs"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]}
-      ]},
-      {"id": 101, "title": {"en-US": "Algorithms and analyses"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
-        {"id": 107, "title": {"en-US": "Customer analyses"}, "children": [
-          {"id": 8, "title": {"en-US": "Sales forecasts"}, "longTitle": {"en-US": "Sales forecasts"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 9, "title": {"en-US": "Recommendation engine"}, "longTitle": {"en-US": "Recommendation engine"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 10, "title": {"en-US": "Customer lifetime value"}, "longTitle": {"en-US": "Customer lifetime value"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 108, "title": {"en-US": "Operational analyses"}, "children": [
-          {"id": 11, "title": {"en-US": "Optimize logistics"}, "longTitle": {"en-US": "Optimize logistics"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 12, "title": {"en-US": "Optimize discounts"}, "longTitle": {"en-US": "Optimize discounts"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 13, "title": {"en-US": "Predict store visits"}, "longTitle": {"en-US": "Predict store visits"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 109, "title": {"en-US": "Other analyses"}, "children": [
-          {"id": 14, "title": {"en-US": "Click flow analysis"}, "longTitle": {"en-US": "Click flow analysis"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]}
-      ]},
-      {"id": 102, "title": {"en-US": "New business processes"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
-        {"id": 1010, "title": {"en-US": "Customer service"}, "children": [
-          {"id": 15, "title": {"en-US": "Customer value"}, "longTitle": {"en-US": "Customer value"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 16, "title": {"en-US": "Smart pricing"}, "longTitle": {"en-US": "Smart pricing"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 1011, "title": {"en-US": "Store operations"}, "children": [
-          {"id": 17, "title": {"en-US": "Store layout"}, "longTitle": {"en-US": "Store layout"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 18, "title": {"en-US": "Smart staffing"}, "longTitle": {"en-US": "Smart staffing"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 1012, "title": {"en-US": "Other processes"}, "children": [
-          {"id": 19, "title": {"en-US": "Smart assortment"}, "longTitle": {"en-US": "Smart assortment"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 20, "title": {"en-US": "Digital partnering"}, "longTitle": {"en-US": "Digital partnering"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]}
-      ]},
-      {"id": 103, "title": {"en-US": "Digital control"}, "onboardingStatus": 1, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "children": [
-        {"id": 1013, "title": {"en-US": "Digital customer interactions"}, "children": [
-          {"id": 21, "title": {"en-US": "Dynamic web store"}, "longTitle": {"en-US": "Dynamic web store"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 22, "title": {"en-US": "Custom emails"}, "longTitle": {"en-US": "Custom emails"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 23, "title": {"en-US": "Velo App"}, "longTitle": {"en-US": "Velo App"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 1014, "title": {"en-US": "Control of employees"}, "children": [
-          {"id": 24, "title": {"en-US": "Staffing app"}, "longTitle": {"en-US": "Staffing app"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }, 
-          {"id": 25, "title": {"en-US": "Next best action"}, "longTitle": {"en-US": "Next best action"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]},
-        {"id": 1015, "title": {"en-US": "Other"}, "children": [
-          {"id": 26, "title": {"en-US": "Proggressive advertising"}, "longTitle": {"en-US": "Proggressive advertising"}, "description": {"en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."}, "returns": 500, "price": 10000 }
-        ]}
-      ]}
-    ],
+    {
+      "id": 100,
+      "title": {
+        "en-US": "Sources of data"
+      },
+      "description": {
+        "en-US": "Data is at the heart of digital transformation. Streams of digital data capture diverse aspects of the natural world, firm processes, business environment, customers, partners, and so forth. The higher the quality, comprehensiveness, and timeliness the data is, the greater its value tends to be. While companies now generate plenty of data through their operations and digital customer interfaces, valuable data can also be procured from external suppliers. Companies often aggregate diverse “data assets”, such as databases related to specific information systems, into comprehensive “information assets”, such as detailed profiles of their customers’ behaviors and interests."
+      },
+      "children": [
+        {
+          "id": 104,
+          "title": {
+            "en-US": "Customer data"
+          },
+          "children": [
+            {
+              "id": 0,
+              "title": {
+                "en-US": "Customer register"
+              },
+              "longTitle": {
+                "en-US": "A centralized register of detailed customer information"
+              },
+              "description": {
+                "en-US": "This project collects all information related to the customers into a centralized information asset that helps run diverse analyses. Collecting customer data also involves important privacy issues, including compliance with the European GDPR framework. Companies often have information concerning purchases, contracts, and communications spread through diverse information systems, making it impossible to calculate, for example, even how profitable each customer is."
+              },
+              "price": 8000,
+              "returns": 600
+            },
+            {
+              "id": 1,
+              "title": {
+                "en-US": "Security cam data"
+              },
+              "longTitle": {
+                "en-US": "Cloud storage of data streams from security cameras"
+              },
+              "description": {
+                "en-US": "The project replaces old CCTV cameras with new cloud-connected models that store the video feed into a centralized cloud repository. Security cameras help reduce theft, but their can also be used to track the number of visitors in the stores over time. Storage of the camera data enables further, more sophisticated analyses."
+              },
+              "price": 2000,
+              "returns": 200
+            },
+            {
+              "id": 2,
+              "title": {
+                "en-US": "Market research"
+              },
+              "longTitle": {
+                "en-US": "Third party market research data on consumers"
+              },
+              "description": {
+                "en-US": "This project involves acquiring external market analysis data on key consumer groups. Such data helps assess the market potential of diverse services, set prices for products, and target advertising to the consumers most likely to make purchases."
+              },
+              "price": 12000,
+              "returns": 1000
+            }
+          ]
+        },
+        {
+          "id": 105,
+          "title": {
+            "en-US": "Product data"
+          },
+          "children": [
+            {
+              "id": 3,
+              "title": {
+                "en-US": "Product details"
+              },
+              "longTitle": {
+                "en-US": "A register of all products and their characteristics"
+              },
+              "description": {
+                "en-US": "This project transfers discrepant product data from diverse document formats into a centralized database. The data makes it possible to search for and compare different products and their features. This helps employees serve the customers better, helps improve the representation of products in digital channels, and speeds up the creation of promotional materials."
+              },
+              "price": 5000,
+              "returns": 200
+            },
+            {
+              "id": 4,
+              "title": {
+                "en-US": "Product sales data"
+              },
+              "longTitle": {
+                "en-US": "A centralized database of all product sales"
+              },
+              "description": {
+                "en-US": "This project collates all sales data from various geographic locations and information systems to provide accurate insight on what products and services the company has sold, where, when, and to whom. The database allows the firm to better assess the realized profits from different products and the impact of discounts on profitability."
+              },
+              "price": 4000,
+              "returns": 500
+            }
+          ]
+        },
+        {
+          "id": 106,
+          "title": {
+            "en-US": "Other data"
+          },
+          "children": [
+            {
+              "id": 5,
+              "title": {
+                "en-US": "Weather forecasts"
+              },
+              "longTitle": {
+                "en-US": "Weather data and predictions for all store locations"
+              },
+              "description": {
+                "en-US": "This project develops a system integration that provides access to weather forecast information in machine readable format."
+              },
+              "price": 2000,
+              "returns": 100
+            },
+            {
+              "id": 6,
+              "title": {
+                "en-US": "Employee data"
+              },
+              "longTitle": {
+                "en-US": "Integrated data on employees from HR systems and cash registers"
+              },
+              "description": {
+                "en-US": "This project integrates data from HR databases, work scheduling system, and cash registers across geographic locations into a comprehensive information asset on employees. Such centralized high-quality data allows more informed and fair decision making through greater transparency towards employees and their performance."
+              },
+              "price": 5000,
+              "returns": 800
+            },
+            {
+              "id": 7,
+              "title": {
+                "en-US": "User identity tracking"
+              },
+              "longTitle": {
+                "en-US": "User identity tracking in digital and physical channels"
+              },
+              "description": {
+                "en-US": "This project involves efforts to encourage web and mobile users to create accounts, and to link that data to customer identities in store, when possible. Such data can be further analyzed to understand how different customers use the digital channels and visit physical stores."
+              },
+              "price": 2000,
+              "returns": 500
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "title": {
+        "en-US": "Algorithms and analyses"
+      },
+      "description": {
+        "en-US": "Algorithms are the intelligent core of software systems, the recipes that transform datasets into insights, categorizations, and business decisions. The design of algorithms draws on mathematics, computer science, and statistics. They vary from elementary recipes, such as sorting algorithm that order fields alphabetically to complex neural networks that recognize anomalies and categorize image and video data. Although powerful open source algorithms area now readily available for companies to use, they often require high volumes of reliable data to work. Algorithms are central to managerial pursuit of “digital omniscience”, the efforts to understand and model the world through software rather than human intuition."
+      },
+      "children": [
+        {
+          "id": 107,
+          "title": {
+            "en-US": "Customer analyses"
+          },
+          "children": [
+            {
+              "id": 8,
+              "title": {
+                "en-US": "Sales forecasts"
+              },
+              "description": {
+                "en-US": "This project involves the development of machine learning models that predict the sales of each product, divided across the store network and online channel. Such models are central to many managerial decisions and improve logistics processes."
+              },
+              "price": 6000,
+              "returns": 1000
+            },
+            {
+              "id": 9,
+              "title": {
+                "en-US": "Recommendation engine"
+              },
+              "description": {
+                "en-US": "This project develops a set of recommendation engines that help target the most suitable products to customers. While there are many kinds of recommendation algorithms, they all use the available data concerning the focal customer and other similar customers to predict the most likely products or services the customer would buy."
+              },
+              "price": 6000,
+              "returns": 200
+            },
+            {
+              "id": 10,
+              "title": {
+                "en-US": "Customer lifetime value"
+              },
+              "description": {
+                "en-US": "This project develops a set of algorithms that estimate the future spending of an actual or potential customer. These are typically “stochastic models” that assign customers into categories and predict the likelihood of them moving from one category to another. Modeling the likely future spending can help company make smarter advertising decisions and design targeted efforts to retain the most attractive customers."
+              },
+              "price": 8000,
+              "returns": 400
+            }
+          ]
+        },
+        {
+          "id": 108,
+          "title": {
+            "en-US": "Operational analyses"
+          },
+          "children": [
+            {
+              "id": 11,
+              "title": {
+                "en-US": "Optimized logistics"
+              },
+              "description": {
+                "en-US": "This project implements an advanced software system to manage inventory levels and shipping more smartly. Optimized logistics increase product availability, save money in shipping and storage costs, and help free up capital tied up in inventory. Optimized logistics can greatly benefit from accurate sales forecasts."
+              },
+              "price": 10000,
+              "returns": 1200
+            },
+            {
+              "id": 12,
+              "title": {
+                "en-US": "Price optimization"
+              },
+              "description": {
+                "en-US": "This project implements a set of algorithms that help set optimal prices for products as well as to determine the timing and magnitude of discounts to maximize aggregate profits. While pricing decisions are still often made by human experts, data and algorithms can help improve the pricing significantly. The algorithms also help free up inventory for next season’s products without destroying profitability through mistimed discounting. It is worth noting that this project shifts decision making power concerning discounts from individual store managers to the headquarters."
+              },
+              "price": 8000,
+              "returns": 1000
+            },
+            {
+              "id": 13,
+              "title": {
+                "en-US": "Predicting store visits"
+              },
+              "description": {
+                "en-US": "This project develops prediction algorithms that estimate how many customers will visit each store over the coming weeks, on an hour-to-hour basis. Such predictions can help store managers adapt their staffing levels to save costs when foot traffic is low and to retain high level of customer service during busy periods. The usefulness of such algorithms depends greatly on the accuracy of the predictions made by store managers."
+              },
+              "price": 6000,
+              "returns": 400
+            }
+          ]
+        },
+        {
+          "id": 109,
+          "title": {
+            "en-US": "Other analyses"
+          },
+          "children": [
+            {
+              "id": 14,
+              "title": {
+                "en-US": "Web analytics"
+              },
+              "longTitle": {
+                "en-US": "Analytics system for website, mobile, and digital ads."
+              },
+              "description": {
+                "en-US": "This project involves the adoption and setting up of a sophisticated cloud software service to analyze the marketing “funnel” – what kind of customers click ads, how do they use the website, and what explains whether they buy anything or not. Such analytics tools help digital marketing specialist design more effective ads and target them better. They also help improve the design of the web store and thus increase sales. The same analytics tools can be also used with proprietary mobile apps."
+              },
+              "price": 10000,
+              "returns": 800
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "title": {
+        "en-US": "New business processes"
+      },
+      "description": {
+        "en-US": "To take full benefit of business analytics and smart algorithms, companies need to redesign their business processes. Often this involves replacing rather static human routines with adaptive processes and more frequent updates. This implies changes to many work roles and thus require challenging change management processes. While companies often used to allocate advertising budgets and set prices quarterly, many companies now adapt them weekly or even more frequently. To leverage algorithmic prescriptions, businesses often have to shift decision making from local managers to information systems and recognize previously overlooked interdependencies across business functions."
+      },
+      "children": [
+        {
+          "id": 110,
+          "title": {
+            "en-US": "Customer service"
+          },
+          "children": [
+            {
+              "id": 15,
+              "title": {
+                "en-US": "Service experimentation"
+              },
+              "longTitle": {
+                "en-US": "Agile processes for rapid experimentation"
+              },
+              "description": {
+                "en-US": "This project involves widespread training to instill an entrepreneurial culture of rapid experimentation. Digital data flows and tools enable companies to monitor their environment and react more quickly to new opportunities and threats. This agility requires, however, that various managers and front-line employees are able to recognize changes and to device potential responses. By training employees to experiment with new services and service variations, the company aims to improve customer experience and create new revenue sources."
+              },
+              "price": 12000,
+              "returns": 1000
+            },
+            {
+              "id": 16,
+              "title": {
+                "en-US": "Adaptive pricing"
+              },
+              "longTitle": {
+                "en-US": "Management practices accommodating dynamic pricing"
+              },
+              "description": {
+                "en-US": "This project involves training for centralized smart pricing, based on analytics and A/B testing (running personalized discounts to identify optimal prices). The project also installs smart price tags into stores so that changes in pricing can be adapted more rapidly throughout the store network."
+              },
+              "price": 6000,
+              "returns": 500
+            }
+          ]
+        },
+        {
+          "id": 111,
+          "title": {
+            "en-US": "Store operations"
+          },
+          "children": [
+            {
+              "id": 17,
+              "title": {
+                "en-US": "Adapting store layouts"
+              },
+              "longTitle": {
+                "en-US": "Constant improvement of stores"
+              },
+              "description": {
+                "en-US": "This project trains the store managers and staff to conceive and test changes in the store layout. Distributed experimentation and lateral sharing of best practices across stores improves the customer experience. Consequently, the customers are likely to visit stores more often, spread positive word of mouth, and spend more money."
+              },
+              "price": 4000,
+              "returns": 500
+            },
+            {
+              "id": 18,
+              "title": {
+                "en-US": "Smart staffing and rewards"
+              },
+              "description": {
+                "en-US": "This project replaces the established staffing processes that are focused on convenient matching employees and shifts with a more data-driven process that seeks to optimize both costs and revenues. By linking rewards and working hours more closely to sales, the new process aims to employ the most effective employees in shifts where they can make the biggest impact."
+              },
+              "price": 6000,
+              "returns": 500
+            }
+          ]
+        },
+        {
+          "id": 112,
+          "title": {
+            "en-US": "Other processes"
+          },
+          "children": [
+            {
+              "id": 19,
+              "title": {
+                "en-US": "Centralized assortment"
+              },
+              "longTitle": {
+                "en-US": "Data-driven selection of product assortment"
+              },
+              "description": {
+                "en-US": "This project creates a centralized role for choosing the assortment sold at various store locations. Previously, the company had used store managers’ expertise and local knowledge as the basis for choosing product assortments sold at various stores. With increasing availability of data, the centralized unit is better poised to determine the products and services offered at each store."
+              },
+              "price": 4000,
+              "returns": 500
+            },
+            {
+              "id": 20,
+              "title": {
+                "en-US": "Digital partnerships"
+              },
+              "description": {
+                "en-US": "This project establishes a network of partnerships with other consumer companies, offering complementary services, such as insurance products and travel, to customer’s and drawing partners’ customers to the web store. These partnerships create new sources of revenue from partners and increase sales in digital and physical channels."
+              },
+              "price": 10000,
+              "returns": 800
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "title": {
+        "en-US": "Digital control"
+      },
+      "description": {
+        "en-US": "To enable smart automation, companies often seek to make customer experiences, physical equipment, employees, and other processes directly controllable by software. The digital control of the enterprise extends the reach of software to adapt customer experience in real time. While adapting the content, prices, and advertising on mobile apps and websites is fairly easy, companies have also implemented software systems that provide real time instructions to sales clerks and call center employees. The Internet of Things (IoT) now allows software systems to control physical equipment, enabling smart algorithms to adapt the functioning of power plants and oil refineries, and orchestrate smart buildings."
+      },
+      "children": [
+        {
+          "id": 113,
+          "title": {
+            "en-US": "Digital customer interactions"
+          },
+          "children": [
+            {
+              "id": 21,
+              "title": {
+                "en-US": "Dynamic web store"
+              },
+              "longTitle": {
+                "en-US": "Adaptive website and mobile app"
+              },
+              "description": {
+                "en-US": "This project adopts a cloud service for providing a more dynamic web and mobile store with the capacity to customize the content shown to users. This involves, for example, showing customers products that they have previously looked at but not bought. Dynamic digital channels are a prerequisite for taking full advantage of the recommendation engine."
+              },
+              "price": 12000,
+              "returns": 600
+            },
+            {
+              "id": 22,
+              "title": {
+                "en-US": "Customized emails"
+              },
+              "longTitle": {
+                "en-US": "Targeted emails and deals for registered customers"
+              },
+              "description": {
+                "en-US": "This project implements a dynamic email platform for sending out news to registered customers. By taking into account information on customers’ age, gender, and other factors helps provide more interesting and relevant information, thereby reducing the likelihood that they unsubscribe the email newsletter. Customized emails can leverage the recommendation engine and targeted discounts to increase purchase likelihood."
+              },
+              "price": 4000,
+              "returns": 600
+            },
+            {
+              "id": 23,
+              "title": {
+                "en-US": "Velo customer app"
+              },
+              "longTitle": {
+                "en-US": "Mobile app for loyal customers"
+              },
+              "description": {
+                "en-US": "This project creates a mobile app for Android and iPhone. The app allows customers to browse and order products, book the annual service for their bike, and check news related to the store. If users allow notifications and the tracking of geographic location, the app can inform them of events in stores."
+              },
+              "price": 12000,
+              "returns": 600
+            }
+          ]
+        },
+        {
+          "id": 114,
+          "title": {
+            "en-US": "Control of employees"
+          },
+          "children": [
+            {
+              "id": 24,
+              "title": {
+                "en-US": "Staff scheduling app"
+              },
+              "description": {
+                "en-US": "This project adopts a third-party cloud service and mobile app for scheduling shifts for staff. The app reduces workload for store managers and creates greater flexibility in staffing, calling employees to work an extra shift on the previous or even the same day a store is enjoying a particularly high number of customers."
+              },
+              "price": 6000,
+              "returns": 400
+            },
+            {
+              "id": 25,
+              "title": {
+                "en-US": "Next best actions in store"
+              },
+              "description": {
+                "en-US": "This project installs a third-party application on the cash registers that instructs employees to cross-sell and up-sell specific products or services to customers. “Next best action” refers to the best product or service that the sales clerk should try to offer to the customer. The suggested recommendations can be adapted based on customer demographics and product availability. The software can also leverage the recommendation engine to provide customized suggestions based on past purchases."
+              },
+              "price": 4000,
+              "returns": 600
+            }
+          ]
+        },
+        {
+          "id": 115,
+          "title": {
+            "en-US": "Other"
+          },
+          "children": [
+            {
+              "id": 26,
+              "title": {
+                "en-US": "Programmatic advertising"
+              },
+              "description": {
+                "en-US": "This project automates the buying of digital advertising space. Leveraging third party advertising platform. The system continuously adapts the advertising spending and content displayed to diverse demographic groups based on the effectiveness of the advertisements. Programmatic advertising can significantly increase the effectiveness of advertising spending and reduce the work needed in marketing. When connected to the logistics system, the platform avoids displaying ads for products that are out of stock."
+              },
+              "price": 8000,
+              "returns": 800
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "investmentCombos": [
     {
-      "investments": [0, 5, 11],
-      "description": {"en-US": "Investing in X, Y, and Z enabled the company to accurately target its advertising."},
-      "returns": 5000
+      "investments": [
+        0,
+        9
+      ],
+      "description": {
+        "en-US": "The recommendation engine benefits from accurate customer register."
+      },
+      "returns": 200
+    },
+    {
+      "investments": [
+        0,
+        10
+      ],
+      "description": {
+        "en-US": "Customer register really helps make the most of our customer lifecycle value analyses."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        0,
+        12
+      ],
+      "description": {
+        "en-US": "Price optimization leads to better discounts with customer register."
+      },
+      "returns": 200
+    },
+    {
+      "investments": [
+        0,
+        14
+      ],
+      "description": {
+        "en-US": "We get more out of web analytics with accurate customer register."
+      },
+      "returns": 200
+    },
+    {
+      "investments": [
+        0,
+        20
+      ],
+      "description": {
+        "en-US": "Thanks to our customer register, we get more out of digital partnerships."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        0,
+        22
+      ],
+      "description": {
+        "en-US": "Customized emails leverage our up-to-date customer register."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        0,
+        25
+      ],
+      "description": {
+        "en-US": "Offering next best actions in store benefits from our up-to-date customer register."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        1,
+        13
+      ],
+      "description": {
+        "en-US": "Security camera data helps us keep track of store visitors and thus improves our predictions."
+      },
+      "returns": 600
+    },
+    {
+      "investments": [
+        1,
+        17
+      ],
+      "description": {
+        "en-US": "Heatmaps derived from security camera data support the design of better store layouts."
+      },
+      "returns": 600
+    },
+    {
+      "investments": [
+        2,
+        8
+      ],
+      "description": {
+        "en-US": "Market research supports our sales forecasts."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        2,
+        16
+      ],
+      "description": {
+        "en-US": "We are using market research in our smart pricing practices."
+      },
+      "returns": 200
+    },
+    {
+      "investments": [
+        2,
+        20
+      ],
+      "description": {
+        "en-US": "Market research is helpful in creating the customized emails."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        3,
+        11
+      ],
+      "description": {
+        "en-US": "Product details include the dimensions of products, helping us optimize storage space in our warehouses."
+      },
+      "returns": 300
+    },
+    {
+      "investments": [
+        3,
+        21
+      ],
+      "description": {
+        "en-US": "Having detailed product information makes the web store so much better."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        3,
+        23
+      ],
+      "description": {
+        "en-US": "Detailed product information makes the Velo mobile app so much more interesting."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        4,
+        8
+      ],
+      "description": {
+        "en-US": "Without detailed sales data, the sales forecasts would be much less accurate."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        4,
+        9
+      ],
+      "description": {
+        "en-US": "Comprehensive sales data makes the recommendation engine work much better."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        4,
+        12
+      ],
+      "description": {
+        "en-US": "High quality product sales data helps improve our price optimization."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        4,
+        16
+      ],
+      "description": {
+        "en-US": "Product sales data helps is helpful in terms of price optimization."
+      },
+      "returns": 500
+    },
+    {
+      "investments": [
+        4,
+        19
+      ],
+      "description": {
+        "en-US": "Our centralized assortment choices really benefit from accurate sales data."
+      },
+      "returns": 300
+    },
+    {
+      "investments": [
+        4,
+        25
+      ],
+      "description": {
+        "en-US": "Product sales data helps is helpful in terms of price optimization."
+      },
+      "returns": 300
+    },
+    {
+      "investments": [
+        5,
+        13
+      ],
+      "description": {
+        "en-US": "The weather forecast data helps us predict more accurately how many customers there will be."
+      },
+      "returns": 500
+    },
+    {
+      "investments": [
+        6,
+        18
+      ],
+      "description": {
+        "en-US": "Accurate employee data helps us run the predictive models for staffing and to create more fair and motivating rewards."
+      },
+      "returns": 400
+    },
+    {
+      "investments": [
+        7,
+        9
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        14
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        20
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        21
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        22
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        25
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        7,
+        26
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        8,
+        11
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        8,
+        16
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        9,
+        21
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        9,
+        22
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        9,
+        25
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        10,
+        12
+      ],
+      "description": {
+        "en-US": "The customer lifetime analytics and price optimization allow us to create targeted discounts for key customers."
+      },
+      "returns": 600
+    },
+    {
+      "investments": [
+        10,
+        22
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        10,
+        20
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        10,
+        26
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        11,
+        19
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        12,
+        16
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        13,
+        18
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        14,
+        20
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        14,
+        21
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        16,
+        22
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        16,
+        26
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        20,
+        21
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        20,
+        22
+      ],
+      "returns": 300
+    },
+    {
+      "investments": [
+        6,
+        13,
+        18,
+        24
+      ],
+      "description": {
+        "en-US": "Thanks to our accurate employee data, and predictive algorithms, the scheduling app helps us get the most out of workforce!"
+      },
+      "returns": 600
+    },
+    {
+      "investments": [
+        7,
+        10,
+        14,
+        26
+      ],
+      "description": {
+        "en-US": "This is amazing! We can now track users, estimate their lifetime value based on web analytics, and spend advertising to attract and retain these customers."
+      },
+      "returns": 2000
     }
   ]
 }

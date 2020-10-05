@@ -5,7 +5,7 @@ import { trigger,
          transition } from '@angular/animations';
 
 import { ANIMATION_TIMING,
-         SharedService} from './services/shared.service';
+         SharedService} from './shared/shared.service';
 
 @Component({
   selector: 'app-root',

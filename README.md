@@ -2,10 +2,9 @@
 
 ## To do
 
-* Check if we need to recompile after edits to settings|texts.json and, if so, change those to http requests 
-* If you run out of money to buy anything, 
-  show a message that you need to skip X rounds before you can make another investment.
-  Note that we need to factor this into to the purchases url structure as nulls
+* Make final report nicer
+* Allow viewing of interim report by clicking the Investments button
+* Convert localisation to use i18l
 
 ## Angular version
 

@@ -217,6 +217,12 @@
     <h1>
       {{ t("Final report") }}
     </h1>
+    <button class="reset"
+            (click)="startOverClick($event)">
+      {{ t("Start over") }}
+    </button>
+    <app-result-chart [chartData]="resultChartData"
+                      [returnsLabel]="t('Monthly returns')"></app-result-chart>
   </div>
   
 </div>
