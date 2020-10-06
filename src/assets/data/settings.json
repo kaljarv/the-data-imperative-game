@@ -12,6 +12,7 @@
       "description": {
         "en-US": "Data is at the heart of digital transformation. Streams of digital data capture diverse aspects of the natural world, firm processes, business environment, customers, partners, and so forth. The higher the quality, comprehensiveness, and timeliness the data is, the greater its value tends to be. While companies now generate plenty of data through their operations and digital customer interfaces, valuable data can also be procured from external suppliers. Companies often aggregate diverse “data assets”, such as databases related to specific information systems, into comprehensive “information assets”, such as detailed profiles of their customers’ behaviors and interests."
       },
+      "onboardingStatus": 1,
       "children": [
         {
           "id": 104,
@@ -159,6 +160,7 @@
       "description": {
         "en-US": "Algorithms are the intelligent core of software systems, the recipes that transform datasets into insights, categorizations, and business decisions. The design of algorithms draws on mathematics, computer science, and statistics. They vary from elementary recipes, such as sorting algorithm that order fields alphabetically to complex neural networks that recognize anomalies and categorize image and video data. Although powerful open source algorithms area now readily available for companies to use, they often require high volumes of reliable data to work. Algorithms are central to managerial pursuit of “digital omniscience”, the efforts to understand and model the world through software rather than human intuition."
       },
+      "onboardingStatus": 1,
       "children": [
         {
           "id": 107,
@@ -274,6 +276,7 @@
       "description": {
         "en-US": "To take full benefit of business analytics and smart algorithms, companies need to redesign their business processes. Often this involves replacing rather static human routines with adaptive processes and more frequent updates. This implies changes to many work roles and thus require challenging change management processes. While companies often used to allocate advertising budgets and set prices quarterly, many companies now adapt them weekly or even more frequently. To leverage algorithmic prescriptions, businesses often have to shift decision making from local managers to information systems and recognize previously overlooked interdependencies across business functions."
       },
+      "onboardingStatus": 1,
       "children": [
         {
           "id": 110,
@@ -387,6 +390,7 @@
       "description": {
         "en-US": "To enable smart automation, companies often seek to make customer experiences, physical equipment, employees, and other processes directly controllable by software. The digital control of the enterprise extends the reach of software to adapt customer experience in real time. While adapting the content, prices, and advertising on mobile apps and websites is fairly easy, companies have also implemented software systems that provide real time instructions to sales clerks and call center employees. The Internet of Things (IoT) now allows software systems to control physical equipment, enabling smart algorithms to adapt the functioning of power plants and oil refineries, and orchestrate smart buildings."
       },
+      "onboardingStatus": 1,
       "children": [
         {
           "id": 113,
