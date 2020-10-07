@@ -499,7 +499,7 @@ export class GameComponent implements OnDestroy, OnInit {
       const newCmb =  this.getNewlyCompletedCombos();
       const nearCmb = this.getNearlyCompletedCombos();
       if (newCmb.length > 0) {
-        sentiment += 1;
+        sentiment += newCmb.length;
         advice += this.t(newCmb[0].description ?? "Wow! That investment really seems to pay off!") + " ";
       } else if (nearCmb.length > 0) {
         advice += this.t("It seems we are not utilising these investments as well as we could: ") +
