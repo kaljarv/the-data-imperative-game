@@ -6,11 +6,13 @@
 * Allow viewing of interim report by clicking the Investments button
 * Convert localisation to use i18l
 
-## Editing settings
+## Editing settings and texts
 
 The settings and text strings are collected in two json files found in `/src/assets/data/`.
 
-See `/src/app/shared/shared.types.ts` and `investment.types.ts` for the data format.
+Texts are fetched from `texts.json` using the string itself (or in some cases an uppercase moniker) as the first key and Angular’s LOCALE_ID as the second. If a translation for the locale is not found, en-US is used. If no entry at all for the string is found in `texts.json`, the string itself is used.
+
+See `/src/app/shared/shared.types.ts` and `investment.types.ts` for the data formats.
 
 ## Editing other files
 
