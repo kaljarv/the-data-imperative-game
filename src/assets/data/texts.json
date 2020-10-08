@@ -1,11 +1,83 @@
 {
-  "The Data Imperative Game": {
-    "en-US": "The Data Imperative Game"
+  "Are you sure you want to start over?": {
+    "en-US": "Are you sure you want to start over?"
+  },
+  "Balance": {
+    "en-US": "Balance"
   },
   "BOOK_DESC": {
     "en-US": "How Digitalization is Reshaping Management, Organizing, and Work."
   },
-  "LOREM_IPSUM": {
-    "en-US": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+  "Cancel": {
+    "en-US": "Cancel"
+  },
+  "Click anywhere to see report.": {
+    "en-US": "Click anywhere to see report."
+  },
+  "Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?": {
+    "en-US": "Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?"
+  },
+  "Final report": {
+    "en-US": "Final report"
+  },
+  "Get the Book Now": {
+    "en-US": "Get the Book Now"
+  },
+  "Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain.": {
+    "en-US": "Hi! I’m happy to be working with such an expert! Here you see all the investment categories available. Let’s start by seeing what options they contain."
+  },
+  "i": {
+    "en-US": "i"
+  },
+  "Invest": {
+    "en-US": "Invest"
+  },
+  "Investments": {
+    "en-US": "Investments"
+  },
+  "It seems we are not utilising these investments as well as we could: ": {
+    "en-US": "It seems we are not utilising these investments as well as we could: "
+  },
+  "Months remaining": {
+    "en-US": "Months remaining"
+  },
+  "One more year to go!": {
+    "en-US": "One more year to go!"
+  },
+  "Only six months to go on the project!": {
+    "en-US": "Only six months to go on the project!"
+  },
+  "Purchased": {
+    "en-US": "Purchased"
+  },
+  "Returns/month": {
+    "en-US": "Returns/month"
+  },
+  "Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.": {
+    "en-US": "Seems like you’ve spent all my money! Now we have to wait to save up funds for investing."
+  },
+  "Start game": {
+    "en-US": "Start game"
+  },
+  "Start investing": {
+    "en-US": "Start investing"
+  },
+  "Start over": {
+    "en-US": "Start over"
+  },
+  "The Data Imperative Game": {
+    "en-US": "The Data Imperative Game"
+  },
+  "This is it! Let’s see how our investments worked out.": {
+    "en-US": "This is it! Let’s see how our investments worked out."
+  },
+  "Wait for one month": {
+    "en-US": "Wait for one month"
+  },
+  "Yes": {
+    "en-US": "Yes"
+  },
+  "You don’t have enough funds!": {
+    "en-US": "You don’t have enough funds!"
   }
 }
