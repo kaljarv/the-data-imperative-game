@@ -28,7 +28,7 @@ Engineering: Kalle Järvenpää / @kaljarv, [Kalle Järvenpää Design](http://k
 
 ## Licensing
 
-The software is distributed the MIT license.
+The software is distributed under the MIT license.
 
 Copyright 2020 Henri Schildt, Kalle Järvenpää and Kiira Keski-Hakuni
 
