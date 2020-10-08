@@ -9,6 +9,10 @@ export interface Settings {
   bookUrl: string,
   investments: Array<any>,
   investmentCombos: Array<any>,
+  sentimentOptions: {
+    neutralReturnsRange: [number, number],
+    comboCompletionBonus: number,
+  },
   [extraOption: string]: any
 }
 

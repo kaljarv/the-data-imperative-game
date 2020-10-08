@@ -3,6 +3,13 @@
   "balance": 100000,
   "rounds": 24,
   "bookUrl": "https://global.oup.com/academic/product/the-data-imperative-9780198840817?cc=fi&lang=en&",
+  "sentimentOptions": {
+    "neutralReturnsRange": [
+      400,
+      1000
+    ],
+    "comboCompletionBonus": 1
+  },
   "investments": [
     {
       "id": 100,

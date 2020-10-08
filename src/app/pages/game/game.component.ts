@@ -499,7 +499,7 @@ export class GameComponent implements OnDestroy, OnInit {
       const newCmb =  this.getNewlyCompletedCombos();
       const nearCmb = this.getNearlyCompletedCombos();
       if (newCmb.length > 0) {
-        sentiment += newCmb.length;
+        sentiment += newCmb.length * this.shared.settings.sentimentOptions.comboCompletionBonus;
         advice += this.t(newCmb[0].description ?? "Wow! That investment really seems to pay off!") + " ";
       } else if (nearCmb.length > 0) {
         advice += this.t("It seems we are not utilising these investments as well as we could: ") +
@@ -509,7 +509,15 @@ export class GameComponent implements OnDestroy, OnInit {
                                         .join(", ") + ". ";
       }
 
-      // 4. Warnings
+      // 4. Returns
+      const returnsChange = this.returns - this.getTotalReturns(this.purchasesAndPassedRounds.slice(0, -1));
+      if (returnsChange < this.shared.settings.sentimentOptions.neutralReturnsRange[0]) {
+        sentiment -= 1;
+      } else if (returnsChange > this.shared.settings.sentimentOptions.neutralReturnsRange[1]) {
+        sentiment += 1;
+      }
+
+      // 5. Warnings
       if (!this.canPurchaseSomething) {
         sentiment -= 1;
         warning += this.t("Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.");
@@ -517,7 +525,7 @@ export class GameComponent implements OnDestroy, OnInit {
     }
   
 	  return {
-      sentiment: clamp(sentiment, -1, 2),
+      sentiment: Math.round(clamp(sentiment, -1, 2)),
       advice:    advice == "" ? null : advice,
       warning:   warning == "" ? null : warning,
       imageUrl:  AVATAR_IMAGES[sentiment] ?? null

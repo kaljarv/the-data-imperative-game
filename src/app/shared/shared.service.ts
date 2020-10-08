@@ -36,6 +36,10 @@ export class SharedService {
     balance: number,
     rounds: number,
     bookUrl: string,
+    sentimentOptions: {
+      neutralReturnsRange: [number, number],
+      comboCompletionBonus: number,
+    },
   };
   public texts: Texts;
 
@@ -72,6 +76,7 @@ export class SharedService {
       balance: settings.balance,
       rounds:  settings.rounds,
       bookUrl: settings.bookUrl,
+      sentimentOptions: settings.sentimentOptions
     };
     this.investments = this.processInvestmentsJson(settings.investments);
     this.investmentCombos = this.processInvestmentCombosJson(settings.investmentCombos);
