@@ -1,4 +1,4 @@
-# TheDataImperativeGame
+# The Data Imperative Game
 
 ## To do
 
