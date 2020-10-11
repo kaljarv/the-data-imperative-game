@@ -28,6 +28,11 @@ import { ANIMATION_DURATION_MS,
 import { ResultChartData } from './result-chart.component';
 
 
+/* 
+ * Because of the different way Angular CLI handles urls in .ts and .css files
+ * we need to keep these images in the global assets folder, whilst the images
+ * referenced in the sass file are kept in a local one, duh!
+ */ 
 const AVATAR_IMAGES = {
   '-1': 'assets/images/avatar-worried.png',
    '0': 'assets/images/avatar-neutral.png',
