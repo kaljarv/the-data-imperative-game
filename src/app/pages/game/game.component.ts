@@ -29,10 +29,10 @@ import { ResultChartData } from './result-chart.component';
 
 
 const AVATAR_IMAGES = {
-  '-1': '/assets/images/avatar-worried.png',
-   '0': '/assets/images/avatar-neutral.png',
-   '1': '/assets/images/avatar-happy.png',
-   '2': '/assets/images/avatar-extatic.png',
+  '-1': 'assets/images/avatar-worried.png',
+   '0': 'assets/images/avatar-neutral.png',
+   '1': 'assets/images/avatar-happy.png',
+   '2': 'assets/images/avatar-extatic.png',
 };
 const DATA_KEY_VERSION = 'v';
 const DATA_KEY_ONBOARDED = 'o';
