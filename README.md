@@ -22,15 +22,25 @@ Make the necessary edits and then deploy the compiled app with `ng deploy`.
 
 Game concept and the book on which it is based: prof. Henri Schildt, Aalto University.
 
-UX and graphic design: Kiira Keski-Hakuni, Aalto University.
+UX and graphic design: Kiira Keski-Hakuni, [Kipsonite](http://kipsonite.com) & Aalto University.
 
-Engineering: Kalle Järvenpää / @kaljarv, [Kalle Järvenpää Design](http://kaljarv.com/).
+Engineering: Kalle Järvenpää / @kaljarv, [Kalle Järvenpää Design](http://kaljarv.com/) & Aalto University.
+
+Character illustrations based on original designs by [Freepik](http://www.freepik.com).
+
+Background photo by [Roman Bozhko](www.romanbozhkocreative.com).
 
 ## Licensing
 
-The software is distributed under the MIT license.
+The software exluding the files listed below is distributed under the MIT license. The license does not include the image files, for whose license see § Authors, above:
 
-Copyright 2020 Henri Schildt, Kalle Järvenpää and Kiira Keski-Hakuni
+* `/src/assets/images/avatar-extatic.png`
+* `/src/assets/images/avatar-happy.png`
+* `/src/assets/images/avatar-neutral.png`
+* `/src/assets/images/avatar-worried.png`
+* `/src/assets/images/game-bg.jpg`
+
+Software copyright 2020 Henri Schildt, Kalle Järvenpää and Kiira Keski-Hakuni.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

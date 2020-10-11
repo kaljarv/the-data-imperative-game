@@ -6,7 +6,7 @@
   height: 100vh
   width: 100vw
   padding: $margin-XL
-  grid-template-rows: 1fr
+  grid-template-rows: 1fr 1em
   grid-template-columns: 2fr 1fr
 
 #titleAndIntro
@@ -62,3 +62,14 @@
     height: 55vw
     top: -5vw
     left: -5vw
+
+#authors
+  grid-area: 2 / 1
+  font-size: $fontSize-XS
+  padding-right: $margin-XL
+
+  a
+    color: inherit !important
+    text-decoration: none !important
+    &:hover
+      text-decoration: underline !important
