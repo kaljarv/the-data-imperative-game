@@ -72,6 +72,8 @@ The bulk of the gameplay is defined in `/src/app/pages/game/game.component.ts` a
 
 The shared service at `/src/app/shared/shared.service.ts` contains a method for text localisation and allows access to the settings and strings defined in the asset json-files. The D3 library for the result chart is provided by `/src/app/shared/d3.service.ts`.
 
+**NB** Due to the different way the Angular CLI handles asset urls in sass, ts and html files, our assets are very inelegantly spread into local and global assets folders, as links will break otherwise when not deploying from the domain root, as is the case with Github Pages.
+
 ## Things to develop later
 
 * Make final report nicer
