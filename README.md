@@ -1,6 +1,8 @@
 # The Data Imperative Game
 
 
+Play the game at https://kaljarv.github.io/the-data-imperative-game/.
+
 ## Editing settings and texts
 
 The settings and text strings are collected in two json files found in `/src/assets/data/`.
