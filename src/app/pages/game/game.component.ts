@@ -523,9 +523,12 @@ export class GameComponent implements OnDestroy, OnInit {
         warning += this.t("Seems like you’ve spent all my money! Now we have to wait to save up funds for investing.");
       }
     }
-  
+
+    // Clamp sentiment
+    sentiment = Math.round(clamp(sentiment, -1, 2));
+
 	  return {
-      sentiment: Math.round(clamp(sentiment, -1, 2)),
+      sentiment: sentiment,
       advice:    advice == "" ? null : advice,
       warning:   warning == "" ? null : warning,
       imageUrl:  AVATAR_IMAGES[sentiment] ?? null
