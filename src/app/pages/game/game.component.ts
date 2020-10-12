@@ -501,11 +501,19 @@ export class GameComponent implements OnDestroy, OnInit {
       } 
 
       // 3. Combos
-      const newCmb =  this.getNewlyCompletedCombos();
+      const newCmb =  this.getNewlyCompletedCombos().sort((a, b) => b.returns - a.returns);
       const nearCmb = this.getNearlyCompletedCombos();
       if (newCmb.length > 0) {
         sentiment += newCmb.length * this.shared.settings.sentimentOptions.comboCompletionBonus;
-        advice += this.t(newCmb[0].description ?? "Wow! That investment really seems to pay off!") + " ";
+        // Use the first available combo description
+        let description: any;
+        for (let i = 0; i < newCmb.length; i++) {
+          if (newCmb[i].description) {
+            description = newCmb[i].description;
+            break;
+          }
+        }
+        advice += this.t(description ?? "Wow! That investment really seems to pay off!") + " ";
       } else if (nearCmb.length > 0) {
         advice += this.t("It seems we are not utilising these investments as well as we could: ") +
                   nearCmb[0].investments.map(id => this.getInvestment(id))
