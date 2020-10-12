@@ -52,17 +52,17 @@ See: https://angular.io/guide/deployment#deploy-to-github-pages
 
 1. Build the project using the Angular CLI with:
 
-  ng build --prod --output-path docs --base-href /the-data-imperative-game/
+    ng build --prod --output-path docs --base-href /the-data-imperative-game/
 
 2. When the build is complete, make a copy of `docs/index.html` and name it `docs/404.html`:
 
-  cp docs/index.html docs/404.html
+    cp docs/index.html docs/404.html
 
 3. Commit your changes and push.
 
-  git add .
-  git commit -a -m "Deploy on Github pages"
-  git push
+    git add .
+    git commit -a -m "Deploy on Github pages"
+    git push
 
 4. Make sure Github is configured to [publish from the docs folder](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch).
 
