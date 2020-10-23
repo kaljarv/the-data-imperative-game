@@ -1,6 +1,7 @@
 import { Component, 
          OnDestroy,
          OnInit } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute,
          NavigationEnd,
          Router } from '@angular/router';

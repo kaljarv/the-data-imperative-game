@@ -1,8 +1,11 @@
 import { EventEmitter,
          Inject,
          Injectable,
-         LOCALE_ID } from '@angular/core';
+         LOCALE_ID,
+         SecurityContext } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer,
+         SafeHtml } from '@angular/platform-browser';
 import { BehaviorSubject,
          forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -45,7 +48,8 @@ export class SharedService {
 
   constructor(
     private http: HttpClient,
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) public locale: string,
+    private sanitizer: DomSanitizer,
   ) {
     this.loadData();
   }

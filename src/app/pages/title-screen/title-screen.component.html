@@ -1,9 +1,10 @@
 <div id="titleAndIntro">
-  <h1>{{ t("The Data Imperative Game") }}</h1>
+  <h1 [innerHTML]="t('The Data Imperative Game')"></h1>
 
-  <p>{{ t("Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?") }}</p>
+  <p [innerHTML]="t('Congratulations! You are hired as a consultant to help your local bicycle shop. Do you have what it takes to make their business thrive?')"></p>
   
-  <button routerLink="game">{{ t("Start game") }}</button>
+  <button routerLink="game" 
+          [innerHTML]="t('Start game')"></button>
 </div>
 
 <div id="bookPromo"
@@ -11,14 +12,9 @@
   <img src="assets/images/book.png"
        [alt]="t('The Data Imperative book')"
        class="book" />
-  <h2>{{ t("Get the Book Now") }}</h2>
-  <p>{{ t("BOOK_DESC") }}</p>
+  <h2 [innerHTML]="t('Get the Book Now')"></h2>
+  <p [innerHTML]="t('BOOK_DESC')"></p>
 </div>
 
-<div id="authors">
-  Concept: Henri Schildt 
-  • Design: <a href="http://kipsonite.com" target="_blank">Kiira Keski-Hakuni</a>
-  • Engineering: <a href="http://kaljarv.com/" target="_blank">Kalle Järvenpää</a>
-  • Illustrations: <a href="http://www.freepik.com" target="_blank">Freepik</a>
-  • Photo: <a href="www.romanbozhkocreative.com" target="_blank">Roman Bozhko</a>
-</div>
+<div id="authors" 
+     [innerHTML]="t('AUTHORS')"></div>

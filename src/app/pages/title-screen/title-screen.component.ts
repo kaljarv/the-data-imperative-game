@@ -1,5 +1,6 @@
 import { Component,
          OnInit } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 
 import { SharedService } from '../../shared';
 

@@ -3,7 +3,8 @@
 
   <div id="balance"
        class="status">
-    <span class="title">{{ t("Balance") }}</span>
+    <span class="title"
+          [innerHTML]="t('Balance')"></span>
     <span class="value"><app-number-tracker [end]="balance"
                                             [skipTracking]="isFirstRound"></app-number-tracker></span>
   </div>
@@ -11,13 +12,15 @@
   <div id="round"
        class="status"
        [style]="roundsLeftStyle">
-    <span class="title">{{ t("Months remaining") }}</span>
+    <span class="title" 
+          [innerHTML]="t('Months remaining')"></span>
     <span class="value">{{ roundsLeft }}</span>
   </div>
 
   <div id="returns"
        class="status">
-    <span class="title">{{ t("Returns/month") }}</span>
+    <span class="title" 
+          [innerHTML]="t('Returns/month')"></span>
     <span class="value"><app-number-tracker [end]="returns"
                                             [skipTracking]="isFirstRound"
                                             stepSize="51"></app-number-tracker></span>
@@ -25,7 +28,8 @@
 
   <div id="purchases"
        class="status">
-    <span class="title">{{ t("Investments") }}</span>
+    <span class="title" 
+          [innerHTML]="t('Investments')"></span>
     <span class="value"><app-number-tracker [end]="spentBalance"
                                             [skipTracking]="isFirstRound"></app-number-tracker></span>
   </div>
@@ -43,12 +47,12 @@
     <div *ngIf="feedback.advice && !adviceHidden"
         id="advice"
         (click)="toggleAdvice($event)"
-        class="sentiment-{{ feedback.sentiment }}
-        @fadeInOut">
-      {{ feedback.advice }} <!-- Note that advice is already localized -->
+        class="sentiment-{{ feedback.sentiment }}"
+        @fadeInOut>
+      <div [innerHtml]="feedback.advice"></div><!-- Note that advice is already localized -->
       <div *ngIf="feedback.warning"
-          class="warning">
-        {{ feedback.warning }} <!-- Note that warning is already localized -->
+          class="warning"
+          [innerHtml]="feedback.warning"><!-- Note that warning is already localized -->
       </div>
     </div>
 
@@ -58,14 +62,11 @@
            class="category category--{{ i }}"
            [class.needsOnboarding]="category.needsOnboarding"
            @fadeInOut>
-        <h3>
-          {{ t(category.title) }}
-        </h3>
+        <h3 [innerHTML]="t(category.title)"></h3>
         <div *ngIf="!category.needsOnboarding && category.onboardingAvailable"
             (click)="startOnboarding(category, $event)"
-            class="infoButton">
-          {{ t("i") }}
-        </div>
+            class="infoButton" 
+            [innerHTML]="t('i')"></div>
         <div *ngIf="!category.needsOnboarding"
              class="content">
           <div *ngIf="!category.onboardingActive"
@@ -76,27 +77,24 @@
                       (click)="show(subcategory, $event)"
                       [class.active]="subcategory.active"
                       type="button">
-                <span class="title">
-                  {{ t(subcategory.title) }}
-                </span>
+                <span class="title" 
+                      [innerHTML]="t(subcategory.title)"></span>
                 <div class="investmentMarkers">
                   <a *ngFor="let investment of subcategory.children"
                     (click)="show(investment, $event)"
                     [class.purchased]="investment.purchased"
                     [class.active]="investment.active"
-                    [title]="t(investment.title)"></a>
-                </div>
+                    [title]="t(investment.title)"></a></div>
               </button>
 
           </div>
           <div *ngIf="category.onboardingActive"
                class="description"
                @switchGrowInOut>
-            {{ t(category.description) }}
+            <div [innerHTML]="t(category.description)"></div>
             <button (click)="closeOnboarding(category, $event)"
-                    type="button">
-              {{ t("Start investing") }}
-            </button>
+                    type="button" 
+                    [innerHTML]="t('Start investing')"></button>
           </div>
         </div>
       </div>
@@ -129,9 +127,8 @@
                     (click)="show(investment, $event)"
                     [class.purchased]="investment.purchased"
                     [class.active]="investment.active"
-                    type="button">
-              {{ t(investment.title) }}
-            </button>
+                    type="button" 
+                    [innerHTML]="t(investment.title)"></button>
           </div>
 
           <!-- Ditto for investment elements -->
@@ -144,30 +141,23 @@
                   [class.purchased]="investment.purchased"
                   @fadeInOut>
                 <div class="outlineWrapper">
-                  <h5>
-                    {{ t(investment.longTitle || investment.title) }}
-                  </h5>
-                  <p class="description">
-                    {{ t(investment.description) }}
-                  </p>
+                  <h5 [innerHTML]="t(investment.longTitle || investment.title)"></h5>
+                  <p  class="description" 
+                      [innerHTML]="t(investment.description)"></p>
                   <button *ngIf="!investment.purchased"
                           #purchaseButton
                           (click)="purchaseClick(investment, $event)"
                           [disabled]="!canPurchase(investment)"
-                          type="button">
-                      {{ t("Invest") }}
-                      {{ investment.price | currency:null:'symbol':'1.0' }}
-                  </button>
+                          type="button" 
+                          innerHTML="{{ t('Invest') }} {{ investment.price | currency:null:'symbol':'1.0' }}"></button>
                   <button *ngIf="investment.purchased"
                           disabled="true"
                           type="button"
-                          class="purchased">
-                      {{ t("Purchased") }}
-                  </button>
+                          class="purchased" 
+                          [innerHTML]="t('Purchased')"></button>
                   <p *ngIf="!investment.purchased && !canPurchase(investment)"
-                    class="warning">
-                    {{ t("You don’t have enough funds!") }}
-                  </p>
+                    class="warning" 
+                    [innerHTML]="t('You don’t have enough funds!')"></p>
                 </div>
               </div>
 
@@ -183,44 +173,36 @@
             id="reset"
             (click)="resetClick($event)"
             [disabled]="round == 1"
-            @fadeInOut>
-      {{ t("Start over") }}
-    </button>
+            @fadeInOut 
+            [innerHTML]="t('Start over')"></button>
 
     <div *ngIf="showStartOverConfirmation"
          id="resetConfirmation"
          @fadeInOut>
-      <span class="info">
-        {{ t("Are you sure you want to start over?") }}
-      </span>
+      <span class="info" 
+            [innerHTML]="t('Are you sure you want to start over?')"></span>
       <button (click)="cancelReset($event)"
-              class="cancel">
-        {{ t("Cancel") }}
-      </button>
+              class="cancel" 
+              [innerHTML]="t('Cancel')"></button>
       <button (click)="startOverClick($event)"
-              class="ok">
-        {{ t("Yes") }}
-      </button>
+              class="ok" 
+              [innerHTML]="t('Yes')"></button>
     </div>
 
     <button id="pass"
             (click)="passClick($event)"
-            [class.highlighted]="!canPurchaseSomething">
-      {{ t("Wait for one month") }}
-    </button>
+            [class.highlighted]="!canPurchaseSomething" 
+            [innerHTML]="t('Wait for one month')"></button>
 
   </ng-container>
 
   <div *ngIf="showReport"
        id="report"
        @fadeInOut>
-    <h1>
-      {{ t("Final report") }}
-    </h1>
+    <h1 [innerHTML]="t('Final report')"></h1>
     <button class="reset"
-            (click)="startOverClick($event)">
-      {{ t("Start over") }}
-    </button>
+            (click)="startOverClick($event)" 
+            [innerHTML]="t('Start over')"></button>
     <app-result-chart [chartData]="resultChartData"
                       [returnsLabel]="t('Monthly returns')"></app-result-chart>
   </div>
