@@ -142,8 +142,8 @@
                   @fadeInOut>
                 <div class="outlineWrapper">
                   <h5 [innerHTML]="t(investment.longTitle || investment.title)"></h5>
-                  <p  class="description" 
-                      [innerHTML]="t(investment.description)"></p>
+                  <div class="description" 
+                       [innerHTML]="t(investment.description)"></div>
                   <button *ngIf="!investment.purchased"
                           #purchaseButton
                           (click)="purchaseClick(investment, $event)"
@@ -155,9 +155,9 @@
                           type="button"
                           class="purchased" 
                           [innerHTML]="t('Purchased')"></button>
-                  <p *ngIf="!investment.purchased && !canPurchase(investment)"
-                    class="warning" 
-                    [innerHTML]="t('You don’t have enough funds!')"></p>
+                  <div *ngIf="!investment.purchased && !canPurchase(investment)"
+                       class="warning" 
+                       [innerHTML]="t('You don’t have enough funds!')"></div>
                 </div>
               </div>
 
