@@ -9,6 +9,8 @@ The settings and text strings are collected in two json files found in `/src/ass
 
 Texts are fetched from `texts.json` using the string itself (or in some cases an uppercase moniker) as the first key and Angular’s LOCALE_ID as the second. If a translation for the locale is not found en-US is used. If no entry at all for the string is found in `texts.json` the string itself is used.
 
+All texts and titles may contain HTML markup, which will, however, be [sanitized by Angular](https://angular.io/guide/security#sanitization-and-security-contexts) at insertion time. 
+
 Once changed, override these files in the `docs/assets/data` folder.
 
 The structure of `settings.json` is as follows. In particular investments  investment categories and investment combos are defined as a node-tree-esque hierarchy. (See `/src/app/shared/shared.types.ts` and `investment.types.ts` for full details of the data formats.)

@@ -1,3 +1,7 @@
+/*
+ * Note that the strings may contain HTML markup, too. Such text will be 
+ * sanitized by Angular but basic formatting and links are allowed, at least.
+ */
 export interface LocalizedString {
   [locale: string]: string
 }

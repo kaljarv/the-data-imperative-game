@@ -132,6 +132,9 @@ export class SharedService {
   /*
    * Return the prompt text in current locale or the text itself if that's not available.
    * If text is a localized string, select the correct localized version or use the default.
+   * Note that if the text is to contain any HTML markup, it should be used as a bound
+   * property, i.e., <span [innerHTML]="shared.getText('Text')"></span>. It will be 
+   * sanitized by Angular but basic formatting and links are allowed, at least.
    */
   public getText(text: string | LocalizedString): string {
     if (text == null) {
