@@ -2,6 +2,9 @@
   "Are you sure you want to start over?": {
     "en-US": "Are you sure you want to start over?"
   },
+  "AUTHORS": {
+    "en-US": "Concept: Henri Schildt • Design: <a href='http://kipsonite.com' target='_blank'>Kiira Keski-Hakuni</a> • Engineering: <a href='http://kaljarv.com/' target='_blank'>Kalle Järvenpää</a> • Illustrations: <a href='http://www.freepik.com' target='_blank'>Freepik</a> • Photo: <a href='www.romanbozhkocreative.com' target='_blank'>Roman Bozhko</a>"
+  },
   "Balance": {
     "en-US": "Balance"
   },
